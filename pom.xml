@@ -28,15 +28,53 @@
   <name>Scribble Web</name>
 
   <properties>
+    <!-- maven-compiler-plugin -->
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+
+    <version.com.github.kongchen.swagger-maven-plugin>2.3.3</version.com.github.kongchen.swagger-maven-plugin>
+    <version.com.wordnik.swagger>1.3.12</version.com.wordnik.swagger>
     <version.junit>4.9</version.junit>
+    <version.maven-war-plugin>2.5</version.maven-war-plugin>
+    <version.org.wildfly>8.2.0.Final</version.org.wildfly>
   </properties>
 
   <modules>
+    <module>backend/scribble-rest</module>
+    <module>modules/scribble-web-api</module>
     <module>ui</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
+
+      <dependency>
+        <groupId>org.scribble.web</groupId>
+        <artifactId>scribble-web-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    
+      <dependency>
+        <groupId>org.wildfly.bom</groupId>
+        <artifactId>jboss-javaee-7.0-with-logging</artifactId>
+        <version>${version.org.wildfly}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Swagger REST annotations -->
+      <dependency>
+        <groupId>com.wordnik</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>${version.com.wordnik.swagger}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.wordnik</groupId>
+        <artifactId>swagger-core_2.10</artifactId>
+        <version>${version.com.wordnik.swagger}</version>
+      </dependency>
+
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
