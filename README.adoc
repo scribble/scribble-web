@@ -1,0 +1,22 @@
+= Scribble Web
+
+This project provides the web tooling for the Scribble project.
+
+
+== Building from source
+
+The first step is to fork and clone the project. Navigate to the https://github.com/scepta/scepta[project repository] and press the Fork button to create a fork of the project under your own github account. Then create a local clone of your fork using:
+
+----
+git clone git@github.com:<your-username>/scribble-web.git
+----
+
+Using a command window, go into the _scribble-web_ folder and issue the following command:
+
+----
+mvn clean install
+----
+
+
+
+
