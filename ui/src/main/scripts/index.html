@@ -9,9 +9,11 @@
 
     <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="libs/patternfly/dist/css/patternfly.css" />
-    <link rel="stylesheet" href="dist/scribble-web.css" />
+    <link rel="stylesheet" href="dist/scribble-ui.css" />
+    <link href="libs/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
 
     <!-- bower:css -->
+    <link rel="stylesheet" href="libs/codemirror/lib/codemirror.css" />
     <!-- endbower -->
 
     <!-- ES6/ES6 shim -->
@@ -42,6 +44,9 @@
     <script src="libs/hawtio-utilities/dist/sugar.js"></script>
     <script src="libs/hawtio-utilities/dist/angular-file-upload.js"></script>
     <script src="libs/hawtio-utilities/dist/hawtio-utilities.js"></script>
+    <script src="libs/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="libs/codemirror/lib/codemirror.js"></script>
+    <script src="libs/angular-ui-codemirror/ui-codemirror.js"></script>
     <!-- endbower -->
 
     <script src="libs/bootstrap/dist/js/bootstrap.js"></script>
@@ -49,7 +54,7 @@
 
     <style>
       body {
-        padding-top: 110px;
+        padding-top: 0px;
       }
       .pane {
         top: 110px;
@@ -166,9 +171,42 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-default navbar-fixed-top navbar-pf" role="navigation">
-      <ul class="nav navbar-nav navbar-primary" hawtio-main-nav></ul>
-      <ul class="nav navbar-nav navbar-persistent" hawtio-sub-tabs></ul>
+    <nav class="navbar navbar-default navbar-pf" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">
+          <img src="dist/img/Scribble.png" alt="SCRIBBLE" />
+        </a>
+      </div>
+      <div class="collapse navbar-collapse navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-utility">
+          <!-- li>
+            <a href="#">Status</a>
+          </li -->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="pficon pficon-user"></span>
+              A User <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#">Change Password</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a href="#">Sign Out</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-primary" hawtio-main-nav></ul>
+        <ul class="nav navbar-nav" hawtio-sub-tabs></ul>
+      </div>
     </nav>
 
     <div id="main" class="container-fluid ng-cloak" ng-controller="HawtioNav.ViewController">
@@ -177,7 +215,6 @@
 
     <!-- add any scripts under dist/ here -->
     <script src="dist/scribble-ui.js"></script>
-    <script src="dist/scribble-ui-test.js"></script>
 
-  </body>
+</body>
 </html>

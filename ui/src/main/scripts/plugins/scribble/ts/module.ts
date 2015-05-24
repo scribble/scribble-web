@@ -13,12 +13,17 @@
 /// See the License for the specific language governing permissions and
 /// limitations under the License.
 
-/// <reference path="../../includes.ts"/>
-module DevExample {
+/// <reference path="scribblePlugin.ts"/>
+module Scribble {
 
-  export var pluginName = "hawtio-test-plugin";
+  export var ModuleController = _module.controller("Scribble.ModuleController", ["$scope", "$routeParams", "$http", ($scope, $routeParams, $http) => {
 
-  export var log: Logging.Logger = Logger.get(pluginName);
+    $scope.moduleName = $routeParams.module;
 
-  export var templatePath = "test-plugins/example/html";
+    $http.get('/scribble-server/protocols/'+$scope.moduleName).success(function(data) {
+      $scope.protocolNames = data;
+    });
+
+  }]);
+
 }

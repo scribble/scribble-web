@@ -29,29 +29,29 @@ import javax.inject.Singleton;
 @Singleton
 public class InMemoryDefinitionManager implements DefinitionManager {
     
-    private Map<String,Map<String,String>> protocols=new HashMap<String,Map<String,String>>();
+    private Map<String,Map<String,Protocol>> protocols=new HashMap<String,Map<String,Protocol>>();
 
     @Override
-    public void updateProtocol(String module, String protocol, String definition) throws Exception {
+    public void updateProtocol(String module, String protocolName, Protocol definition) throws Exception {
         synchronized (protocols) {
-            Map<String,String> map=protocols.get(module);
+            Map<String,Protocol> map=protocols.get(module);
             
             if (map == null) {
-                map = new HashMap<String,String>();
+                map = new HashMap<String,Protocol>();
                 protocols.put(module, map);
             }
             
-            map.put(protocol, definition);
+            map.put(protocolName, definition);
         }
     }
 
     @Override
-    public String getProtocol(String module, String protocol) {
+    public Protocol getProtocol(String module, String protocolName) {
         synchronized (protocols) {
-            Map<String,String> map=protocols.get(module);
+            Map<String,Protocol> map=protocols.get(module);
             
             if (map != null) {
-                return map.get(protocol);
+                return map.get(protocolName);
             }
             
             return null;
@@ -66,10 +66,10 @@ public class InMemoryDefinitionManager implements DefinitionManager {
     }
 
     @Override
-    public Set<String> getProtocolNames(String module) {
+    public Set<String> getProtocolNames(String moduleName) {
         synchronized (protocols) {
-            if (protocols.containsKey(module)) {
-                return protocols.get(module).keySet();
+            if (protocols.containsKey(moduleName)) {
+                return protocols.get(moduleName).keySet();
             }
             return Collections.emptySet();
         }

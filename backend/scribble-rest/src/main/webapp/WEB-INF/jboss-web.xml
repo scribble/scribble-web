@@ -18,5 +18,5 @@
 
 -->
 <jboss-web>
-  <context-root>/scribble</context-root>
+  <context-root>/scribble-server</context-root>
 </jboss-web>

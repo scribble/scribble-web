@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015 Red Hat, Inc. and/or its affiliates
+ * and other contributors as indicated by the @author tags.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 var gulp = require('gulp'),
     wiredep = require('wiredep').stream,
     eventStream = require('event-stream'),
@@ -74,42 +90,6 @@ gulp.task('path-adjust', function() {
 
 gulp.task('clean-defs', function() {
   return gulp.src('defs.d.ts', { read: false })
-    .pipe(plugins.clean());
-});
-
-gulp.task('example-tsc', ['tsc'], function() {
-  var tsResult = gulp.src(config.testTs)
-    .pipe(plugins.typescript(config.testTsProject))
-    .on('error', plugins.notify.onError({
-      message: '#{ error.message }',
-      title: 'Typescript compilation error - test'
-    }));
-
-    return tsResult.js
-        .pipe(plugins.concat('test-compiled.js'))
-        .pipe(gulp.dest('.'));
-});
-
-gulp.task('example-template', ['example-tsc'], function() {
-  return gulp.src(config.testTemplates)
-    .pipe(plugins.angularTemplatecache({
-      filename: 'test-templates.js',
-      root: 'test-plugins/',
-      standalone: true,
-      module: config.testTemplateModule,
-      templateFooter: '}]); hawtioPluginLoader.addModule("' + config.testTemplateModule + '");'
-    }))
-    .pipe(gulp.dest('.'));
-});
-
-gulp.task('example-concat', ['example-template'], function() {
-  return gulp.src(['test-compiled.js', 'test-templates.js'])
-    .pipe(plugins.concat(config.testJs))
-    .pipe(gulp.dest(config.dist));
-});
-
-gulp.task('example-clean', ['example-concat'], function() {
-  return gulp.src(['test-templates.js', 'test-compiled.js'], { read: false })
     .pipe(plugins.clean());
 });
 
@@ -191,15 +171,12 @@ gulp.task('clean', ['concat'], function() {
     .pipe(plugins.clean());
 });
 
-gulp.task('watch', ['build', 'build-example'], function() {
-  plugins.watch(['libs/**/*.js', 'libs/**/*.css', 'index.html', config.dist + '/' + config.js], function() {
+gulp.task('watch', ['build'], function() {
+  plugins.watch(['libs/**/*.js', 'libs/**/*.css', 'css/*.css', 'index.html', config.dist + '/' + config.js], function() {
     gulp.start('reload');
   });
   plugins.watch(['libs/**/*.d.ts', config.ts, config.templates], function() {
     gulp.start(['tslint-watch', 'tsc', 'template', 'concat', 'clean']);
-  });
-  plugins.watch([config.testTs, config.testTemplates], function() {
-    gulp.start(['example-tsc', 'example-template', 'example-concat', 'example-clean']);
   });
   plugins.watch(config.less, function(){
     gulp.start('less', 'reload');
@@ -213,10 +190,18 @@ gulp.task('connect', ['watch'], function() {
   var kube = uri(process.env.KUBERNETES_MASTER || 'http://localhost:8080');
   console.log("Connecting to Kubernetes on: " + kube);
   */
+  var scribble = uri('http://localhost:8080/scribble-server');
 
   hawtio.setConfig({
     port: 2772,
     staticProxies: [
+    {
+      proto: scribble.protocol(),
+      hostname: scribble.hostname(),
+      port: scribble.port(),
+      path: '/scribble-server',
+      targetPath: '/scribble-server'
+    }
     /*
     // proxy to a service, in this case kubernetes
     {
@@ -275,8 +260,6 @@ gulp.task('reload', function() {
 });
 
 gulp.task('build', ['bower', 'path-adjust', 'tslint', 'tsc', 'less', 'template', 'concat', 'clean']);
-
-gulp.task('build-example', ['example-tsc', 'example-template', 'example-concat', 'example-clean']);
 
 gulp.task('default', ['connect']);
 

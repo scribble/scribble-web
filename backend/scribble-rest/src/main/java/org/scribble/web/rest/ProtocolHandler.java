@@ -18,8 +18,6 @@ package org.scribble.web.rest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN_TYPE;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +38,7 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
 
 import org.scribble.web.api.DefinitionManager;
+import org.scribble.web.api.Protocol;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -54,9 +53,9 @@ import com.wordnik.swagger.annotations.ApiResponses;
  *
  */
 @Path("/")
-@Consumes(TEXT_PLAIN)
-@Produces(TEXT_PLAIN)
-@Api(value = "/", description = "Protocol administration")
+@Consumes(APPLICATION_JSON)
+@Produces(APPLICATION_JSON)
+@Api(value = "/", description = "Protocol management")
 public class ProtocolHandler {
     
     @Inject
@@ -72,7 +71,7 @@ public class ProtocolHandler {
             @Suspended final AsyncResponse response,
             @ApiParam(required = true, value = "The module name") @PathParam("module") String moduleName,
             @ApiParam(required = true, value = "The protocol name") @PathParam("protocol") String protocolName,
-            @ApiParam(value = "The protocol definition", required = true) String definition) {
+            @ApiParam(value = "The protocol definition", required = true) Protocol definition) {
 
         try {
             definitionManager.updateProtocol(moduleName, protocolName, definition);
@@ -83,16 +82,16 @@ public class ProtocolHandler {
             Map<String, String> errors = new HashMap<String, String>();
             errors.put("errorMsg", "Internal Error: " + t.getMessage());
             response.resume(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(errors).type(TEXT_PLAIN_TYPE).build());
+                    .entity(errors).type(APPLICATION_JSON_TYPE).build());
         }
     }
 
     @GET
     @Path("/protocols/{module}/{protocol}")
-    @Produces(TEXT_PLAIN)
+    @Produces(APPLICATION_JSON)
     @ApiOperation(
             value = "Retrieve protocol definition for module and protocol name",
-            response = String.class)
+            response = Protocol.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success, protocol definition found and returned"),
             @ApiResponse(code = 500, message = "Internal server error"),
@@ -102,19 +101,19 @@ public class ProtocolHandler {
             @ApiParam(required = true, value = "The protocol name") @PathParam("protocol") String protocolName) {
 
         try {
-            String protocol = definitionManager.getProtocol(moduleName, protocolName);
+            Protocol protocol = definitionManager.getProtocol(moduleName, protocolName);
 
             if (protocol == null) {
-                response.resume(Response.status(Response.Status.BAD_REQUEST).type(TEXT_PLAIN_TYPE).build());
+                response.resume(Response.status(Response.Status.BAD_REQUEST).type(APPLICATION_JSON_TYPE).build());
             } else {
-                response.resume(Response.status(Response.Status.OK).entity(protocol).type(TEXT_PLAIN_TYPE)
+                response.resume(Response.status(Response.Status.OK).entity(protocol).type(APPLICATION_JSON_TYPE)
                         .build());
             }
         } catch (Exception e) {
             Map<String, String> errors = new HashMap<String, String>();
             errors.put("errorMsg", "Internal Error: " + e.getMessage());
             response.resume(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(errors).type(TEXT_PLAIN_TYPE).build());
+                    .entity(errors).type(APPLICATION_JSON_TYPE).build());
         }
 
     }

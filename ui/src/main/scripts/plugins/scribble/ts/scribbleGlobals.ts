@@ -14,11 +14,11 @@
 /// limitations under the License.
 
 /// <reference path="../../includes.ts"/>
-module Example {
+module Scribble {
 
-  export var pluginName = "hawtio-assembly";
+  export var pluginName = "scribble";
 
   export var log: Logging.Logger = Logger.get(pluginName);
 
-  export var templatePath = "plugins/example/html";
+  export var templatePath = "plugins/scribble/html";
 }

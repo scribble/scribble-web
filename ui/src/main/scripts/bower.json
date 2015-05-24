@@ -18,10 +18,12 @@
   "dependencies": {
     "hawtio-core": "~2.0.0",
     "hawtio-core-navigation": "~2.0.0",
-    "hawtio-utilities": "~2.0.0"
+    "hawtio-utilities": "~2.0.0",
+    "angular-xeditable": "~0.x",
+    "bootstrap": "~3.3.1",
+    "angular-ui-codemirror": "~0.2.3"
   },
   "devDependencies": {
-    "bootstrap": "~3.3.1",
     "patternfly": "~1.1.2",
     "hawtio-core-dts": "~2.0.0"
   }

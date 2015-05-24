@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-md-12" ng-controller="Scribble.ProtocolController">
+    <ol class="breadcrumb">
+      <li><a href="/protocols">Modules</a></li>
+      <li><a href="/protocols/{{moduleName}}">{{moduleName}}</a></li>
+      <li class="active">{{protocolName}}</li>
+    </ol>
+
+    <h1><b>{{protocolName}}</b> <span style="color:grey">Protocol</span></h1>
+
+    <a href="#" editable-textarea="protocol.description" e-rows="14" e-cols="120" rows="50" >
+        <pre><i>{{ protocol.description || 'No description' }}</i></pre>
+    </a>
+
+      <div class="row">
+        <div class="col-sm-8 col-md-9">
+          <ui-codemirror ui-codemirror-opts="editorOptions" ng-model="protocol.definition" ></ui-codemirror>
+        </div>
+        <div class="col-sm-4 col-md-3 sidebar-pf sidebar-pf-right">
+          <div class="sidebar-header sidebar-header-bleed-left sidebar-header-bleed-right">
+            <h2 class="h5">Actions</h2>
+
+            <ul class="list-group">
+              <li class="list-group-item" ng-click="saveProtocol()"><span class="glyphicon glyphicon-ok-circle"></span>&nbsp;&nbsp;Save</li>        
+              <li class="list-group-item" ng-click="restoreProtocol()"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;Restore</li>        
+              <li class="list-group-item" ng-click="projectProtocol()"><span class="glyphicon glyphicon-fullscreen"></span>&nbsp;&nbsp;Project</li>        
+            </ul>
+
+          </div>
+        </div>
+      </div>
+
+<!-- Example of how errors could be displayed?
+      <div>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-success">200 OK: The server successfully processed the request.</li>
+          <li class="list-group-item list-group-item-info">100 Continue: The client should continue with its request.</li>
+          <li class="list-group-item list-group-item-warning">503 Service Unavailable: The server is temporarily unable to handle the request.</li>
+          <li class="list-group-item list-group-item-danger">400 Bad Request: The request cannot be fulfilled due to bad syntax.</li>
+        </ul>
+      </div>
+-->
+  </div>
+</div>
