@@ -13,11 +13,15 @@
 /// See the License for the specific language governing permissions and
 /// limitations under the License.
 
-/// <reference path="examplePlugin.ts"/>
-module DevExample {
+/// <reference path="scribblePlugin.ts"/>
+module Scribble {
 
-  export var Page1Controller = _module.controller("DevExample.Page1Controller", ["$scope", ($scope) => {
-    $scope.target = "World!";
+  export var ModulesController = _module.controller("Scribble.ModulesController", ["$scope", "$http", ($scope, $http) => {
+
+    $http.get('/scribble-server/protocols').success(function(data) {
+      $scope.moduleNames = data;
+    });
+
   }]);
 
 }

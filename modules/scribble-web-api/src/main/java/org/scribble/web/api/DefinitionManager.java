@@ -26,22 +26,22 @@ public interface DefinitionManager {
     /**
      * This method updates a protocol definition.
      * 
-     * @param module The module name
-     * @param protool The protocol name
+     * @param moduleName The module name
+     * @param protocolName The protocol name
      * @param definition The protocol definition
      * @throws Exception Failed to update protocol
      */
-    public void updateProtocol(String module, String protool, String definition) throws Exception;
+    public void updateProtocol(String moduleName, String protocolName, Protocol definition) throws Exception;
     
     /**
      * This method returns the definition associated with the supplied
      * module and protocol names.
      * 
-     * @param module The module name
-     * @param protocol The protocol name
+     * @param moduleName The module name
+     * @param protocolName The protocol name
      * @return The protocol definition
      */
-    public String getProtocol(String module, String protocol);
+    public Protocol getProtocol(String moduleName, String protocolName);
     
     /**
      * This method returns the list of module names.
@@ -54,9 +54,9 @@ public interface DefinitionManager {
      * This method returns the protocol names associated with the
      * supplied module.
      * 
-     * @param module The module name
+     * @param moduleName The module name
      * @return The protocol names
      */
-    public Set<String> getProtocolNames(String module);
+    public Set<String> getProtocolNames(String moduleName);
 
 }

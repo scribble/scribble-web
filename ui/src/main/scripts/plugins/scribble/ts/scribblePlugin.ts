@@ -14,24 +14,40 @@
 /// limitations under the License.
 
 /// <reference path="../../includes.ts"/>
-/// <reference path="exampleGlobals.ts"/>
-module Example {
+/// <reference path="scribbleGlobals.ts"/>
+module Scribble {
 
-  export var _module = angular.module(Example.pluginName, []);
+  export var _module = angular.module(Scribble.pluginName, ["xeditable","ui.codemirror"]);
 
   var tab = undefined;
 
   _module.config(["$locationProvider", "$routeProvider", "HawtioNavBuilderProvider",
     ($locationProvider, $routeProvider: ng.route.IRouteProvider, builder: HawtioMainNav.BuilderFactory) => {
     tab = builder.create()
-      .id(Example.pluginName)
-      .title(() => "Example")
-      .href(() => "/example")
-      .subPath("Page 1", "page1", builder.join(Example.templatePath, "page1.html"))
+      .id(Scribble.pluginName)
+      .title(() => "Protocols")
+      .href(() => "/protocols")
       .build();
     builder.configureRouting($routeProvider, tab);
     $locationProvider.html5Mode(true);
+    $routeProvider.
+      when('/protocols', {
+        templateUrl: 'plugins/scribble/html/modules.html',
+        controller: 'Scribble.ModulesController'
+      }).
+      when('/protocols/:module', {
+        templateUrl: 'plugins/scribble/html/module.html',
+        controller: 'Scribble.ModuleController'
+      }).
+      when('/protocols/:module/:protocol', {
+        templateUrl: 'plugins/scribble/html/protocol.html',
+        controller: 'Scribble.ProtocolController'
+      });
   }]);
+
+  _module.run(function(editableOptions) {
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+  });
 
   _module.run(["HawtioNav", (HawtioNav: HawtioMainNav.Registry) => {
     HawtioNav.add(tab);
@@ -39,5 +55,5 @@ module Example {
   }]);
 
 
-  hawtioPluginLoader.addModule(Example.pluginName);
+  hawtioPluginLoader.addModule(Scribble.pluginName);
 }
