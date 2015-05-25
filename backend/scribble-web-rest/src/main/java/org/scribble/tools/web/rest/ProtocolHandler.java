@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.web.rest;
+package org.scribble.tools.web.rest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
@@ -37,8 +37,8 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
 
-import org.scribble.web.api.DefinitionManager;
-import org.scribble.web.api.Protocol;
+import org.scribble.tools.web.api.DefinitionManager;
+import org.scribble.tools.web.api.Protocol;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;

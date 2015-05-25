@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.web.rest;
+package org.scribble.tools.web.rest;
 
 import java.util.logging.Logger;
 
