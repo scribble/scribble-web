@@ -21,7 +21,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.scribble.web</groupId>
+  <groupId>org.scribble.tools.web</groupId>
   <artifactId>scribble-web-parent</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -41,7 +41,7 @@
   </properties>
 
   <modules>
-    <module>backend/scribble-rest</module>
+    <module>backend/scribble-web-rest</module>
     <module>modules/scribble-web-api</module>
     <module>ui</module>
   </modules>
@@ -50,7 +50,7 @@
     <dependencies>
 
       <dependency>
-        <groupId>org.scribble.web</groupId>
+        <groupId>org.scribble.tools.web</groupId>
         <artifactId>scribble-web-api</artifactId>
         <version>${project.version}</version>
       </dependency>

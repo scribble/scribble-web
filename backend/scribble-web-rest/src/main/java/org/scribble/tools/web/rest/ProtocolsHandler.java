@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.web.rest;
+package org.scribble.tools.web.rest;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
@@ -37,8 +37,8 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
 
-import org.scribble.web.api.DefinitionManager;
-import org.scribble.web.api.Protocol;
+import org.scribble.tools.web.api.protocols.DefinitionManager;
+import org.scribble.tools.web.api.protocols.Protocol;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -52,17 +52,17 @@ import com.wordnik.swagger.annotations.ApiResponses;
  * @author gbrown
  *
  */
-@Path("/")
+@Path("/protocols")
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
 @Api(value = "/", description = "Protocol management")
-public class ProtocolHandler {
+public class ProtocolsHandler {
     
     @Inject
     private DefinitionManager definitionManager;
 
     @PUT
-    @Path("/protocols/{module}/{protocol}")
+    @Path("/{module}/{protocol}")
     @ApiOperation(value = "Create or update a protocol definition")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Create or update protocol succeeded."),
@@ -87,7 +87,7 @@ public class ProtocolHandler {
     }
 
     @GET
-    @Path("/protocols/{module}/{protocol}")
+    @Path("/{module}/{protocol}")
     @Produces(APPLICATION_JSON)
     @ApiOperation(
             value = "Retrieve protocol definition for module and protocol name",
@@ -119,7 +119,7 @@ public class ProtocolHandler {
     }
 
     @GET
-    @Path("/protocols")
+    @Path("/")
     @Produces(APPLICATION_JSON)
     @ApiOperation(
             value = "Retrieve the list of modules",
@@ -148,7 +148,7 @@ public class ProtocolHandler {
     }
 
     @GET
-    @Path("/protocols/{module}")
+    @Path("/{module}")
     @Produces(APPLICATION_JSON)
     @ApiOperation(
             value = "Retrieve protocol names within specified module",

@@ -14,23 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.web.rest;
-
-import java.util.logging.Logger;
-
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+package org.scribble.tools.web.api.actions;
 
 /**
- * Base class for REST module.
- *
  * @author gbrown
  */
-@ApplicationPath("/")
-public class ScribbleRESTApp extends Application {
-    private static final Logger LOG=Logger.getLogger(ScribbleRESTApp.class.getName());
+public interface ActionManager {
 
-    public ScribbleRESTApp() {
-        LOG.fine("Scribble REST starting ...");
-    }
+    /**
+     * This method projects a protocol identified by the supplied action.
+     * 
+     * @param action The projection action
+     * @return The projection result
+     */
+    ProjectProtocolResult project(ProjectProtocolAction action);
+
 }
