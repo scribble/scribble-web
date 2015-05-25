@@ -158,7 +158,7 @@ gulp.task('template', ['tsc'], function() {
 gulp.task('concat', ['template'], function() {
   var gZipSize = size(gZippedSizeOptions);
   var license = tslintRules.rules['license-header'][1];
-  return gulp.src(['compiled.js', 'templates.js'])
+  return gulp.src(['compiled.js', 'templates.js', 'js/**/*.js'])
     .pipe(plugins.concat(config.js))
     .pipe(plugins.header(license))
     .pipe(size(normalSizeOptions))
@@ -172,7 +172,7 @@ gulp.task('clean', ['concat'], function() {
 });
 
 gulp.task('watch', ['build'], function() {
-  plugins.watch(['libs/**/*.js', 'libs/**/*.css', 'css/*.css', 'index.html', config.dist + '/' + config.js], function() {
+  plugins.watch(['libs/**/*.js', 'js/**/*.js', 'libs/**/*.css', 'css/*.css', 'index.html', config.dist + '/' + config.js], function() {
     gulp.start('reload');
   });
   plugins.watch(['libs/**/*.d.ts', config.ts, config.templates], function() {

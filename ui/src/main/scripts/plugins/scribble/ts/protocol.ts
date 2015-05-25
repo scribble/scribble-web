@@ -44,7 +44,7 @@ module Scribble {
     $scope.editorOptions = {
       lineWrapping : true,
       lineNumbers: true,
-      mode: 'xml'
+      mode: 'scribble'
     };
   }]);
 
