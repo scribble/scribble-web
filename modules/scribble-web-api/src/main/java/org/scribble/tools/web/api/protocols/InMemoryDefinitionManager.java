@@ -18,6 +18,7 @@ package org.scribble.tools.web.api.protocols;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Map;
 
@@ -59,17 +60,39 @@ public class InMemoryDefinitionManager implements DefinitionManager {
     }
 
     @Override
-    public Set<String> getModuleNames() {
+    public Set<Module> getModules() {
         synchronized (protocols) {
-            return protocols.keySet();
+            Set<Module> ret=new HashSet<Module>();
+            
+            for (String module : protocols.keySet()) {
+                Module m=new Module();
+                m.setName(module);
+                m.setNumberOfProtocols(protocols.get(module).size());
+                ret.add(m);
+            }
+            
+            return ret;
         }
     }
 
     @Override
-    public Set<String> getProtocolNames(String moduleName) {
+    public Set<ProtocolInfo> getProtocols(String moduleName) {
         synchronized (protocols) {
             if (protocols.containsKey(moduleName)) {
-                return protocols.get(moduleName).keySet();
+                Set<ProtocolInfo> ret=new HashSet<ProtocolInfo>();
+                
+                for (String protocol : protocols.get(moduleName).keySet()) {
+                    ProtocolInfo pi=new ProtocolInfo();
+                    pi.setName(protocol);
+                    
+                    Protocol p=protocols.get(moduleName).get(protocol);
+                    pi.setAuthor(p.getAuthor());
+                    pi.setDescription(p.getDescription());
+                    
+                    ret.add(pi);
+                }
+                
+                return ret;
             }
             return Collections.emptySet();
         }

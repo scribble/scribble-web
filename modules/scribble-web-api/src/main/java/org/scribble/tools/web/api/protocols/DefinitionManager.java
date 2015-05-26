@@ -44,19 +44,19 @@ public interface DefinitionManager {
     public Protocol getProtocol(String moduleName, String protocolName);
     
     /**
-     * This method returns the list of module names.
+     * This method returns the list of modules.
      * 
-     * @return The module names
+     * @return The modules
      */
-    public Set<String> getModuleNames();
+    public Set<Module> getModules();
 
     /**
-     * This method returns the protocol names associated with the
+     * This method returns the protocol information associated with the
      * supplied module.
      * 
      * @param moduleName The module name
-     * @return The protocol names
+     * @return The protocol information
      */
-    public Set<String> getProtocolNames(String moduleName);
+    public Set<ProtocolInfo> getProtocols(String moduleName);
 
 }

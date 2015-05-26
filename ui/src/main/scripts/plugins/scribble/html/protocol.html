@@ -15,6 +15,15 @@
       <div class="row">
         <div class="col-sm-8 col-md-9">
           <ui-codemirror ui-codemirror-opts="editorOptions" ng-model="protocol.definition" ></ui-codemirror>
+
+          <br>
+          
+          <ul class="list-group">
+            <li ng-repeat="marker in markers" class="list-group-item"
+            				ng-class="{'list-group-item-danger': marker.severity==='Error', 'list-group-item-warning': marker.severity==='Warning'}" >
+              {{marker.description}}
+            </li>
+          </ul>
         </div>
         <div class="col-sm-4 col-md-3 sidebar-pf sidebar-pf-right">
           <div class="sidebar-header sidebar-header-bleed-left sidebar-header-bleed-right">
@@ -30,15 +39,5 @@
         </div>
       </div>
 
-<!-- Example of how errors could be displayed?
-      <div>
-        <ul class="list-group">
-          <li class="list-group-item list-group-item-success">200 OK: The server successfully processed the request.</li>
-          <li class="list-group-item list-group-item-info">100 Continue: The client should continue with its request.</li>
-          <li class="list-group-item list-group-item-warning">503 Service Unavailable: The server is temporarily unable to handle the request.</li>
-          <li class="list-group-item list-group-item-danger">400 Bad Request: The request cannot be fulfilled due to bad syntax.</li>
-        </ul>
-      </div>
--->
   </div>
 </div>
