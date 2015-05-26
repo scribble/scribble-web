@@ -26,7 +26,17 @@ module Scribble {
     });
 
     $scope.saveProtocol = function() {
-      return $http.put('/scribble-server/protocols/'+$scope.moduleName+'/'+$scope.protocolName, $scope.protocol);
+      return $http.put('/scribble-server/protocols/'+$scope.moduleName+'/'+$scope.protocolName, $scope.protocol)
+        .success(function(data, status, headers, config) {
+        var verifyAction = {
+            module: $scope.moduleName,
+            protocol: $scope.protocolName
+        };
+        
+        $http.post('/scribble-server/actions/verify', verifyAction).success(function(data) {
+          $scope.markers = data;
+        });
+      });
     };
 
     $scope.restoreProtocol = function() {

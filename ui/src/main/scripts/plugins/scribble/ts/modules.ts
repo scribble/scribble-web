@@ -19,8 +19,10 @@ module Scribble {
   export var ModulesController = _module.controller("Scribble.ModulesController", ["$scope", "$http", ($scope, $http) => {
 
     $http.get('/scribble-server/protocols').success(function(data) {
-      $scope.moduleNames = data;
+      $scope.modules = data;
     });
+
+    $scope.nameOrderProp = 'name';
 
   }]);
 

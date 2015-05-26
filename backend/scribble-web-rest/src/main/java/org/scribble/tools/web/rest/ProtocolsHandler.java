@@ -19,12 +19,9 @@ package org.scribble.tools.web.rest;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -130,13 +127,8 @@ public class ProtocolsHandler {
     public void getModules(@Suspended final AsyncResponse response) {
 
         try {
-            Set<String> names = definitionManager.getModuleNames();
-
-            List<String> sorted=new ArrayList<String>(names);
-            
-            Collections.sort(sorted);
-            
-            response.resume(Response.status(Response.Status.OK).entity(sorted).type(APPLICATION_JSON_TYPE)
+            response.resume(Response.status(Response.Status.OK).entity(
+                    definitionManager.getModules()).type(APPLICATION_JSON_TYPE)
                         .build());
         } catch (Exception e) {
             Map<String, String> errors = new HashMap<String, String>();
@@ -161,13 +153,8 @@ public class ProtocolsHandler {
             @ApiParam(required = true, value = "The module") @PathParam("module") String moduleName) {
 
         try {
-            Set<String> names = definitionManager.getProtocolNames(moduleName);
-
-            List<String> sorted=new ArrayList<String>(names);
-            
-            Collections.sort(sorted);
-            
-            response.resume(Response.status(Response.Status.OK).entity(sorted).type(APPLICATION_JSON_TYPE)
+            response.resume(Response.status(Response.Status.OK).entity(
+                    definitionManager.getProtocols(moduleName)).type(APPLICATION_JSON_TYPE)
                         .build());
         } catch (Exception e) {
             Map<String, String> errors = new HashMap<String, String>();

@@ -14,30 +14,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.actions;
-
-import java.util.List;
+package org.scribble.tools.web.api.protocols;
 
 /**
+ * This class represents the information about a module.
+ *
  * @author gbrown
  */
-public interface ActionManager {
+public class Module {
+
+    private String name;
+    private int numberOfProtocols;
 
     /**
-     * This method verifies the protocol associated with the supplied
-     * action information.
-     * 
-     * @param action The verification action
-     * @return The list of markers, identifying errors and warnings
+     * @return the name
      */
-    List<Marker> verify(VerifyProtocolAction action);
-    
+    public String getName() {
+        return name;
+    }
+
     /**
-     * This method projects a protocol identified by the supplied action.
-     * 
-     * @param action The projection action
-     * @return The projection result
+     * @param name the name to set
      */
-    ProjectProtocolResult project(ProjectProtocolAction action);
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the numberOfProtocols
+     */
+    public int getNumberOfProtocols() {
+        return numberOfProtocols;
+    }
+
+    /**
+     * @param numberOfProtocols the numberOfProtocols to set
+     */
+    public void setNumberOfProtocols(int numberOfProtocols) {
+        this.numberOfProtocols = numberOfProtocols;
+    }
 
 }

@@ -21,8 +21,10 @@ module Scribble {
     $scope.moduleName = $routeParams.module;
 
     $http.get('/scribble-server/protocols/'+$scope.moduleName).success(function(data) {
-      $scope.protocolNames = data;
+      $scope.protocols = data;
     });
+
+    $scope.nameOrderProp = 'name';
 
   }]);
 

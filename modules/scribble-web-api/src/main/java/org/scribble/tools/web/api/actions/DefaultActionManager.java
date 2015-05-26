@@ -16,8 +16,12 @@
  */
 package org.scribble.tools.web.api.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
+import org.scribble.tools.web.api.actions.Marker.Severity;
 import org.scribble.tools.web.api.protocols.DefinitionManager;
 import org.scribble.tools.web.api.protocols.Protocol;
 
@@ -46,6 +50,34 @@ public class DefaultActionManager implements ActionManager {
 
         ret.setDefinitions(action.getDefinitions());
         
+        return ret;
+    }
+
+    /* (non-Javadoc)
+     * @see org.scribble.tools.web.api.actions.ActionManager#verify(org.scribble.tools.web.api.actions.VerifyProtocolAction)
+     */
+    @Override
+    public List<Marker> verify(VerifyProtocolAction action) {
+        List<Marker> ret=new ArrayList<Marker>();
+        
+        Marker m1=new Marker();
+        m1.setDescription("This is the first marker");
+        m1.setSeverity(Severity.Error);
+        m1.setStartLine(1);
+        m1.setEndLine(1);
+        m1.setStartPos(4);
+        m1.setEndPos(10);
+        ret.add(m1);
+
+        Marker m2=new Marker();
+        m2.setDescription("This is the second marker");
+        m2.setSeverity(Severity.Warning);
+        m2.setStartLine(1);
+        m2.setEndLine(1);
+        m2.setStartPos(7);
+        m2.setEndPos(12);
+        ret.add(m2);
+
         return ret;
     }
 
