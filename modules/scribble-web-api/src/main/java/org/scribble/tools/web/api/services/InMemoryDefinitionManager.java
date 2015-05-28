@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.protocols;
+package org.scribble.tools.web.api.services;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +23,11 @@ import java.util.Set;
 import java.util.Map;
 
 import javax.inject.Singleton;
+
+import org.scribble.tools.web.api.model.Module;
+import org.scribble.tools.web.api.model.Protocol;
+import org.scribble.tools.web.api.model.ProtocolInfo;
+import org.scribble.tools.web.api.model.RoleInfo;
 
 /**
  * @author gbrown
@@ -96,6 +101,19 @@ public class InMemoryDefinitionManager implements DefinitionManager {
             }
             return Collections.emptySet();
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.scribble.tools.web.api.services.DefinitionManager#getRoles(java.lang.String, java.lang.String)
+     */
+    @Override
+    public Set<RoleInfo> getRoles(String moduleName, String protocolName) {
+        Set<RoleInfo> ret=new HashSet<RoleInfo>();
+        
+        ret.add(new RoleInfo("MyRoleA"));
+        ret.add(new RoleInfo("MyRoleB"));
+
+        return ret;
     }
 
 }

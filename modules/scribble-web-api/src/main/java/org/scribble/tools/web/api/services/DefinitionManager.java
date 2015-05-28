@@ -14,9 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.protocols;
+package org.scribble.tools.web.api.services;
 
 import java.util.Set;
+
+import org.scribble.tools.web.api.model.Module;
+import org.scribble.tools.web.api.model.Protocol;
+import org.scribble.tools.web.api.model.ProtocolInfo;
+import org.scribble.tools.web.api.model.RoleInfo;
 
 /**
  * @author gbrown
@@ -58,5 +63,15 @@ public interface DefinitionManager {
      * @return The protocol information
      */
     public Set<ProtocolInfo> getProtocols(String moduleName);
+
+    /**
+     * This method returns the role information associated with the
+     * supplied module and protocol.
+     * 
+     * @param moduleName The module name
+     * @param protocolName The protocol name
+     * @return The set of role information
+     */
+    public Set<RoleInfo> getRoles(String moduleName, String protocolName);
 
 }

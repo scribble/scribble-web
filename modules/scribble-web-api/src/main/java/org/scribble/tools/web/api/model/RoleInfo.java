@@ -14,18 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.protocols;
+package org.scribble.tools.web.api.model;
 
 /**
- * This class represents the high level information about a protocol.
+ * This class represents the high level information about a role.
  *
  * @author gbrown
  */
-public class ProtocolInfo {
+public class RoleInfo {
 
     private String name;
-    private String description;
-    private String author;
+    
+    public RoleInfo(String name) {
+        this.name = name;
+    }
 
     /**
      * @return the name
@@ -39,34 +41,6 @@ public class ProtocolInfo {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * @return the author
-     */
-    public String getAuthor() {
-        return author;
-    }
-
-    /**
-     * @param author the author to set
-     */
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
 }

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.actions;
+package org.scribble.tools.web.api.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,10 +22,11 @@ import java.util.Set;
 /**
  * @author gbrown
  */
-public class VerifyProtocolAction {
+public class ProjectProtocolAction {
 
     private String module;
     private String protocol;
+    private String role;
     
     private Set<String> definitions=new HashSet<String>();
 
@@ -55,6 +56,20 @@ public class VerifyProtocolAction {
      */
     public void setProtocol(String protocol) {
         this.protocol = protocol;
+    }
+
+    /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
     }
 
     /**

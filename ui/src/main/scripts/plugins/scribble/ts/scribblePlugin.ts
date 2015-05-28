@@ -42,6 +42,10 @@ module Scribble {
       when('/protocols/:module/:protocol', {
         templateUrl: 'plugins/scribble/html/protocol.html',
         controller: 'Scribble.ProtocolController'
+      }).
+      when('/protocols/:module/:protocol/role/:role', {
+        templateUrl: 'plugins/scribble/html/role.html',
+        controller: 'Scribble.RoleController'
       });
   }]);
 
