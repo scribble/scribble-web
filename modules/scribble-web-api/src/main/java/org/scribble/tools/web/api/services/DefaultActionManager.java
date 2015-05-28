@@ -14,16 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.actions;
+package org.scribble.tools.web.api.services;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import org.scribble.tools.web.api.actions.Marker.Severity;
-import org.scribble.tools.web.api.protocols.DefinitionManager;
-import org.scribble.tools.web.api.protocols.Protocol;
+import org.scribble.tools.web.api.model.Marker;
+import org.scribble.tools.web.api.model.ProjectProtocolAction;
+import org.scribble.tools.web.api.model.Protocol;
+import org.scribble.tools.web.api.model.ProtocolProjection;
+import org.scribble.tools.web.api.model.VerifyProtocolAction;
+import org.scribble.tools.web.api.model.Marker.Severity;
 
 /**
  * @author gbrown
@@ -37,19 +40,19 @@ public class DefaultActionManager implements ActionManager {
      * @see org.scribble.tools.web.api.actions.ActionManager#project(org.scribble.tools.web.api.actions.ProjectProtocolAction)
      */
     @Override
-    public ProjectProtocolResult project(ProjectProtocolAction action) {
-        ProjectProtocolResult ret=new ProjectProtocolResult();
+    public ProtocolProjection project(ProjectProtocolAction action) {
+        ProtocolProjection ret=new ProtocolProjection();
         
         if (action.getDefinitions().isEmpty()) {
             Protocol p=definitionManager.getProtocol(action.getModule(), action.getProtocol());
             
             if (p != null) {
-                action.getDefinitions().add(p.getDefinition());
+                ret.setDefinition(p.getDefinition());
+                
+                ret.setGraph("digraph {\n    a -> b;\n    }");
             }
         }
 
-        ret.setDefinitions(action.getDefinitions());
-        
         return ret;
     }
 

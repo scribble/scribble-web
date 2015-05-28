@@ -25,6 +25,10 @@ module Scribble {
       $scope.protocol = data;
     });
 
+    $http.get('/scribble-server/protocols/'+$scope.moduleName+'/'+$scope.protocolName+'/roles').success(function(data) {
+      $scope.roles = data;
+    });
+
     $scope.saveProtocol = function() {
       return $http.put('/scribble-server/protocols/'+$scope.moduleName+'/'+$scope.protocolName, $scope.protocol)
         .success(function(data, status, headers, config) {
@@ -56,6 +60,9 @@ module Scribble {
       lineNumbers: true,
       mode: 'scribble'
     };
+
+    $scope.nameOrderProp = 'name';
+
   }]);
 
 }

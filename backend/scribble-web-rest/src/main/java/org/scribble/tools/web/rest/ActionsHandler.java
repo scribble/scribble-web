@@ -32,11 +32,11 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
 
-import org.scribble.tools.web.api.actions.ActionManager;
-import org.scribble.tools.web.api.actions.Marker;
-import org.scribble.tools.web.api.actions.ProjectProtocolAction;
-import org.scribble.tools.web.api.actions.ProjectProtocolResult;
-import org.scribble.tools.web.api.actions.VerifyProtocolAction;
+import org.scribble.tools.web.api.model.Marker;
+import org.scribble.tools.web.api.model.ProjectProtocolAction;
+import org.scribble.tools.web.api.model.ProtocolProjection;
+import org.scribble.tools.web.api.model.VerifyProtocolAction;
+import org.scribble.tools.web.api.services.ActionManager;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -62,7 +62,7 @@ public class ActionsHandler {
     @POST
     @Path("/project")
     @ApiOperation(value = "Project a protocol definition",
-            response = ProjectProtocolResult.class)
+            response = ProtocolProjection.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully projected a protocol"),
             @ApiResponse(code = 500, message = "Failed to project the protocol") })
@@ -71,7 +71,7 @@ public class ActionsHandler {
             @ApiParam(value = "The projection action details", required = true) ProjectProtocolAction action) {
 
         try {
-            ProjectProtocolResult result=actionManager.project(action);
+            ProtocolProjection result=actionManager.project(action);
 
             response.resume(Response.status(Response.Status.OK).entity(result).build());
 

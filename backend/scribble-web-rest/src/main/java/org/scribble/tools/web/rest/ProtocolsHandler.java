@@ -22,6 +22,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -34,8 +35,10 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
 
-import org.scribble.tools.web.api.protocols.DefinitionManager;
-import org.scribble.tools.web.api.protocols.Protocol;
+import org.scribble.tools.web.api.model.Protocol;
+import org.scribble.tools.web.api.model.ProtocolProjection;
+import org.scribble.tools.web.api.model.RoleInfo;
+import org.scribble.tools.web.api.services.DefinitionManager;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -104,6 +107,38 @@ public class ProtocolsHandler {
                 response.resume(Response.status(Response.Status.BAD_REQUEST).type(APPLICATION_JSON_TYPE).build());
             } else {
                 response.resume(Response.status(Response.Status.OK).entity(protocol).type(APPLICATION_JSON_TYPE)
+                        .build());
+            }
+        } catch (Exception e) {
+            Map<String, String> errors = new HashMap<String, String>();
+            errors.put("errorMsg", "Internal Error: " + e.getMessage());
+            response.resume(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(errors).type(APPLICATION_JSON_TYPE).build());
+        }
+
+    }
+
+    @GET
+    @Path("/{module}/{protocol}/roles")
+    @Produces(APPLICATION_JSON)
+    @ApiOperation(
+            value = "Retrieve protocol definition for module and protocol name",
+            response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success, protocol definition found and returned"),
+            @ApiResponse(code = 500, message = "Internal server error"),
+            @ApiResponse(code = 400, message = "Unknown module and/or protocol name") })
+    public void getRoles(@Suspended final AsyncResponse response,
+            @ApiParam(required = true, value = "The module") @PathParam("module") String moduleName,
+            @ApiParam(required = true, value = "The protocol name") @PathParam("protocol") String protocolName) {
+
+        try {
+            Set<RoleInfo> roles = definitionManager.getRoles(moduleName, protocolName);
+
+            if (roles == null) {
+                response.resume(Response.status(Response.Status.BAD_REQUEST).type(APPLICATION_JSON_TYPE).build());
+            } else {
+                response.resume(Response.status(Response.Status.OK).entity(roles).type(APPLICATION_JSON_TYPE)
                         .build());
             }
         } catch (Exception e) {

@@ -14,32 +14,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.actions;
-
-import java.util.HashSet;
-import java.util.Set;
+package org.scribble.tools.web.api.model;
 
 /**
  * This class provides the results of a protocol projection.
  * 
  * @author gbrown
  */
-public class ProjectProtocolResult {
+public class ProtocolProjection {
 
-    private Set<String> definitions=new HashSet<String>();
+    private String definition;
+    private String graph;
 
     /**
-     * @return the definitions
+     * @return the definition
      */
-    public Set<String> getDefinitions() {
-        return definitions;
+    public String getDefinition() {
+        return definition;
     }
 
     /**
-     * @param definitions the definitions to set
+     * @param definition the definition to set
      */
-    public void setDefinitions(Set<String> definitions) {
-        this.definitions = definitions;
+    public void setDefinition(String definition) {
+        this.definition = definition;
+    }
+
+    /**
+     * @return the graph
+     */
+    public String getGraph() {
+        return graph;
+    }
+
+    /**
+     * @param graph the graph to set
+     */
+    public void setGraph(String graph) {
+        this.graph = graph;
     }
 
 }

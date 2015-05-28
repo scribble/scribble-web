@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-12" ng-controller="Scribble.RoleController">
+    <ol class="breadcrumb">
+      <li><a href="/protocols">Modules</a></li>
+      <li><a href="/protocols/{{moduleName}}">{{moduleName}}</a></li>
+      <li><a href="/protocols/{{moduleName}}/{{protocolName}}">{{protocolName}}</a></li>
+      <li class="active">{{roleName}}</li>
+    </ol>
+
+    <h1><b>{{roleName}}</b> <span style="color:grey">Role</span></h1>
+
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#projection">Projection</a></li>
+      <li><a data-toggle="tab" href="#graph">Graph</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="projection" class="tab-pane fade in active">
+        <div class="row">
+          <div class="col-md-12">
+            <ui-codemirror ui-codemirror-opts="editorOptions" ng-model="projection.definition" ></ui-codemirror>
+          </div>
+        </div>
+      </div>
+      <div id="graph" class="tab-pane fade">
+        <div class="row">
+          <div class="col-md-12">
+            <label>{{projection.graph}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

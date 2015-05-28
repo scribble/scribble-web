@@ -14,9 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.actions;
+package org.scribble.tools.web.api.services;
 
 import java.util.List;
+
+import org.scribble.tools.web.api.model.Marker;
+import org.scribble.tools.web.api.model.ProjectProtocolAction;
+import org.scribble.tools.web.api.model.ProtocolProjection;
+import org.scribble.tools.web.api.model.VerifyProtocolAction;
 
 /**
  * @author gbrown
@@ -38,6 +43,6 @@ public interface ActionManager {
      * @param action The projection action
      * @return The projection result
      */
-    ProjectProtocolResult project(ProjectProtocolAction action);
+    ProtocolProjection project(ProjectProtocolAction action);
 
 }

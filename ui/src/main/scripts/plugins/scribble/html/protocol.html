@@ -11,9 +11,22 @@
     <a href="#" editable-textarea="protocol.description" e-rows="14" e-cols="120" rows="7" >
         <pre><i>{{ protocol.description || 'No description' }}</i></pre>
     </a>
+    
+    <div>
+      <button type="button" class="btn btn-success btn-sm" ng-click="saveProtocol()">Save</button>
+      <button type="button" class="btn btn-danger btn-sm" ng-click="restoreProtocol()">Discard</button>
+      
+      <div style="float: right;">
+      <label>Roles:</label>
+      <a type="button" href="/protocols/{{moduleName}}/{{protocolName}}/role/{{role.name}}" class="btn btn-sm btn-primary"
+      							ng-repeat="role in roles | orderBy:nameOrderProp">{{role.name}}</a>
+      </div>
+    </div>
+    
+    <br>
 
       <div class="row">
-        <div class="col-sm-8 col-md-9">
+        <div class="col-md-12">
           <ui-codemirror ui-codemirror-opts="editorOptions" ng-model="protocol.definition" ></ui-codemirror>
 
           <br>
@@ -24,18 +37,6 @@
               {{marker.description}}
             </li>
           </ul>
-        </div>
-        <div class="col-sm-4 col-md-3 sidebar-pf sidebar-pf-right">
-          <div class="sidebar-header sidebar-header-bleed-left sidebar-header-bleed-right">
-            <h2 class="h5">Actions</h2>
-
-            <ul class="list-group">
-              <li class="list-group-item" ng-click="saveProtocol()"><span class="glyphicon glyphicon-ok-circle"></span>&nbsp;&nbsp;Save</li>        
-              <li class="list-group-item" ng-click="restoreProtocol()"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;Restore</li>        
-              <li class="list-group-item" ng-click="projectProtocol()"><span class="glyphicon glyphicon-fullscreen"></span>&nbsp;&nbsp;Project</li>        
-            </ul>
-
-          </div>
         </div>
       </div>
 
