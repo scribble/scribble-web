@@ -21,6 +21,9 @@
   border: 1px solid #eee;
   height: auto;
 }
+.styled-background {
+  background-color: #ff7;
+}
 svg {
   overflow: hidden;
 }
