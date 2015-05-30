@@ -21,3 +21,19 @@
   border: 1px solid #eee;
   height: auto;
 }
+svg {
+  overflow: hidden;
+}
+.node rect {
+  stroke: #333;
+  stroke-width: 1.5px;
+  fill: #fff;
+}
+.edgeLabel rect {
+  fill: #fff;
+}
+.edgePath {
+  stroke: #333;
+  stroke-width: 1.5px;
+  fill: none;
+}

@@ -9,6 +9,7 @@
 
     <h1><b>{{roleName}}</b> <span style="color:grey">Role</span></h1>
 
+<!-- Comment out tabs for now until work out how to resize graph (issue 16)
     <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#projection">Projection</a></li>
       <li><a data-toggle="tab" href="#graph">Graph</a></li>
@@ -16,20 +17,29 @@
 
     <div class="tab-content">
       <div id="projection" class="tab-pane fade in active">
+-->
         <div class="row">
           <div class="col-md-12">
             <ui-codemirror ui-codemirror-opts="editorOptions" ng-model="projection.definition" ></ui-codemirror>
           </div>
         </div>
+<!--
       </div>
       <div id="graph" class="tab-pane fade">
+-->
+		<br>
+
         <div class="row">
           <div class="col-md-12">
-            <label>{{projection.graph}}</label>
+            <svg id="graphContainer" height="400" width="400">
+              <g height="400" width="400"/>
+            </svg>
           </div>
         </div>
+<!--
       </div>
     </div>
+-->
 
   </div>
 </div>

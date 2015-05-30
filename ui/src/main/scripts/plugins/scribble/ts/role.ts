@@ -16,6 +16,9 @@
 /// <reference path="scribblePlugin.ts"/>
 module Scribble {
 
+  declare var graphlibDot: any;
+  declare var dagreD3: any;
+ 
   export var RoleController = _module.controller("Scribble.RoleController", ["$scope", "$routeParams", "$http", ($scope, $routeParams, $http) => {
 
     $scope.moduleName = $routeParams.module;
@@ -30,6 +33,17 @@ module Scribble {
     
     $http.post('/scribble-server/actions/project', $scope.projectAction).success(function(data) {
       $scope.projection = data;
+      
+      if ($scope.projection.graph !== undefined) {
+        // Produce graph by parsing the DOT syntax into a graphlib object.
+        var graph = graphlibDot.parse($scope.projection.graph);
+    
+        var container=d3.select("svg g");
+      
+        // Render the graphlib object using d3.
+        var renderer = new dagreD3.Renderer();
+        renderer.run(graph, container);
+      }
     });
 
     $scope.editorOptions = {
@@ -38,6 +52,7 @@ module Scribble {
       readOnly: true,
       mode: 'scribble'
     };
+
   }]);
 
 }

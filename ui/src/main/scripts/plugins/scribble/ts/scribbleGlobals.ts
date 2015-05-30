@@ -21,4 +21,5 @@ module Scribble {
   export var log: Logging.Logger = Logger.get(pluginName);
 
   export var templatePath = "plugins/scribble/html";
+ 
 }

@@ -49,7 +49,12 @@ public class DefaultActionManager implements ActionManager {
             if (p != null) {
                 ret.setDefinition(p.getDefinition());
                 
-                ret.setGraph("digraph {\n    a -> b;\n    }");
+                ret.setGraph("digraph Hello {\n" +
+                            "    a -> b [label=hello];\n" +
+                            "    b -> c;\n" +
+                            "    b -> d;\n" +
+                            "    d -> a;\n" +
+                            "    }");
             }
         }
 
