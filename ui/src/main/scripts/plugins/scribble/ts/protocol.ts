@@ -49,10 +49,16 @@ module Scribble {
       });
     };
 
-    $scope.projectProtocol = function() {
-      $http.get('/scribble-server/protocols/'+$scope.moduleName+'/'+$scope.protocolName+'/project').success(function(data) {
-        $scope.protocolProjection = data;
-      });
+    $scope.selectedMarker = function(marker) {
+      if ($scope.currentMarker !== undefined) {
+        $scope.currentMarker.clear();
+      }
+
+      $scope.currentMarker = $scope.doc.markText(
+        {line: marker.startLine-1, ch: marker.startPos-1},
+        {line: marker.endLine-1, ch: marker.endPos-1},
+        {className: "styled-background"}
+      );
     };
 
     $scope.editorOptions = {
@@ -63,6 +69,20 @@ module Scribble {
 
     $scope.nameOrderProp = 'name';
 
+    $scope.codemirrorLoaded = function(_editor) {
+      $scope.editor = _editor;
+      $scope.doc = _editor.getDoc();
+      
+      // Editor part
+      _editor.focus();
+
+      // Options
+      _editor.setOption('lineWrapping', true);
+      _editor.setOption('lineNumbers', true);
+      _editor.setOption('mode', 'scribble');
+      
+      $scope.doc.markClean();
+    };
   }]);
 
 }

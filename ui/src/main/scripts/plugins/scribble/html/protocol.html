@@ -27,12 +27,14 @@
 
       <div class="row">
         <div class="col-md-12">
-          <ui-codemirror ui-codemirror-opts="editorOptions" ng-model="protocol.definition" ></ui-codemirror>
+          <!-- ui-codemirror ui-codemirror-opts="editorOptions" ng-model="protocol.definition" ></ui-codemirror -->
+          <div ng-model="protocol.definition" ui-codemirror="{ onLoad : codemirrorLoaded }" ></div>
 
           <br>
           
           <ul class="list-group">
             <li ng-repeat="marker in markers" class="list-group-item"
+            				ng-click="selectedMarker(marker)"
             				ng-class="{'list-group-item-danger': marker.severity==='Error', 'list-group-item-warning': marker.severity==='Warning'}" >
               {{marker.description}}
             </li>
