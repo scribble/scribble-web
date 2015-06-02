@@ -64,14 +64,4 @@ public interface DefinitionManager {
      */
     public Set<ProtocolInfo> getProtocols(String moduleName);
 
-    /**
-     * This method returns the role information associated with the
-     * supplied module and protocol.
-     * 
-     * @param moduleName The module name
-     * @param protocolName The protocol name
-     * @return The set of role information
-     */
-    public Set<RoleInfo> getRoles(String moduleName, String protocolName);
-
 }

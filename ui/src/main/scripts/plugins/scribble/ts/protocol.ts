@@ -25,7 +25,7 @@ module Scribble {
       $scope.protocol = data;
     });
 
-    $http.get('/scribble-server/protocols/'+$scope.moduleName+'/'+$scope.protocolName+'/roles').success(function(data) {
+    $http.get('/scribble-server/actions/roles/'+$scope.moduleName+'/'+$scope.protocolName).success(function(data) {
       $scope.roles = data;
     });
 
@@ -39,6 +39,14 @@ module Scribble {
         
         $http.post('/scribble-server/actions/verify', verifyAction).success(function(data) {
           $scope.markers = data;
+
+          if ($scope.currentMarker !== undefined) {
+            $scope.currentMarker.clear();
+          }
+
+          $http.get('/scribble-server/actions/roles/'+$scope.moduleName+'/'+$scope.protocolName).success(function(data) {
+            $scope.roles = data;
+          });
         });
       });
     };
@@ -46,6 +54,10 @@ module Scribble {
     $scope.restoreProtocol = function() {
       $http.get('/scribble-server/protocols/'+$scope.moduleName+'/'+$scope.protocolName).success(function(data) {
         $scope.protocol = data;
+
+        $http.get('/scribble-server/actions/roles/'+$scope.moduleName+'/'+$scope.protocolName).success(function(data) {
+          $scope.roles = data;
+        });
       });
     };
 
@@ -55,8 +67,8 @@ module Scribble {
       }
 
       $scope.currentMarker = $scope.doc.markText(
-        {line: marker.startLine-1, ch: marker.startPos-1},
-        {line: marker.endLine-1, ch: marker.endPos-1},
+        {line: marker.startLine-1, ch: marker.startPos},
+        {line: marker.endLine-1, ch: marker.endPos},
         {className: "styled-background"}
       );
     };

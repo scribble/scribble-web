@@ -119,38 +119,6 @@ public class ProtocolsHandler {
     }
 
     @GET
-    @Path("/{module}/{protocol}/roles")
-    @Produces(APPLICATION_JSON)
-    @ApiOperation(
-            value = "Retrieve protocol definition for module and protocol name",
-            response = List.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success, protocol definition found and returned"),
-            @ApiResponse(code = 500, message = "Internal server error"),
-            @ApiResponse(code = 400, message = "Unknown module and/or protocol name") })
-    public void getRoles(@Suspended final AsyncResponse response,
-            @ApiParam(required = true, value = "The module") @PathParam("module") String moduleName,
-            @ApiParam(required = true, value = "The protocol name") @PathParam("protocol") String protocolName) {
-
-        try {
-            Set<RoleInfo> roles = definitionManager.getRoles(moduleName, protocolName);
-
-            if (roles == null) {
-                response.resume(Response.status(Response.Status.BAD_REQUEST).type(APPLICATION_JSON_TYPE).build());
-            } else {
-                response.resume(Response.status(Response.Status.OK).entity(roles).type(APPLICATION_JSON_TYPE)
-                        .build());
-            }
-        } catch (Exception e) {
-            Map<String, String> errors = new HashMap<String, String>();
-            errors.put("errorMsg", "Internal Error: " + e.getMessage());
-            response.resume(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(errors).type(APPLICATION_JSON_TYPE).build());
-        }
-
-    }
-
-    @GET
     @Path("/")
     @Produces(APPLICATION_JSON)
     @ApiOperation(

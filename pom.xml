@@ -37,12 +37,14 @@
     <version.com.wordnik.swagger>1.3.12</version.com.wordnik.swagger>
     <version.junit>4.9</version.junit>
     <version.maven-war-plugin>2.5</version.maven-war-plugin>
+    <version.org.scribble>0.3.0.Final</version.org.scribble>
     <version.org.wildfly>8.2.0.Final</version.org.wildfly>
   </properties>
 
   <modules>
     <module>backend/scribble-web-rest</module>
     <module>modules/scribble-web-api</module>
+    <module>modules/scribble-web-impl</module>
     <module>ui</module>
   </modules>
 
@@ -54,7 +56,33 @@
         <artifactId>scribble-web-api</artifactId>
         <version>${project.version}</version>
       </dependency>
-    
+      <dependency>
+        <groupId>org.scribble.tools.web</groupId>
+        <artifactId>scribble-web-impl</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.scribble</groupId>
+        <artifactId>scribble-core</artifactId>
+        <version>${version.org.scribble}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scribble</groupId>
+        <artifactId>scribble-parser</artifactId>
+        <version>${version.org.scribble}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scribble</groupId>
+        <artifactId>scribble-validation</artifactId>
+        <version>${version.org.scribble}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scribble</groupId>
+        <artifactId>scribble-projection</artifactId>
+        <version>${version.org.scribble}</version>
+      </dependency>
+
       <dependency>
         <groupId>org.wildfly.bom</groupId>
         <artifactId>jboss-javaee-7.0-with-logging</artifactId>

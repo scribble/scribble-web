@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.services;
+package org.scribble.tools.web.impl.services;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ import javax.inject.Singleton;
 import org.scribble.tools.web.api.model.Module;
 import org.scribble.tools.web.api.model.Protocol;
 import org.scribble.tools.web.api.model.ProtocolInfo;
-import org.scribble.tools.web.api.model.RoleInfo;
+import org.scribble.tools.web.api.services.DefinitionManager;
 
 /**
  * @author gbrown
