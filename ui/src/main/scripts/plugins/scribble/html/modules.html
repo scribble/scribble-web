@@ -3,7 +3,7 @@
     <h1><span style="color:grey">Modules</span></h1>
 
     <div class="row">
-      <div class="col-sm-8 col-md-9">
+      <div class="col-md-9">
         Search: <input ng-model="query">
 
         <br>
@@ -15,6 +15,32 @@
             <p><i>Number of protocols: {{module.numberOfProtocols}}</i></p>
           </li>
        </ul>
+
+      </div>
+
+      <div class="col-md-3">
+
+		<h2>Create a new protocol</h2>
+
+        <form name="newprotocolform" class="css-form" novalidate>
+          Module:
+          <input type="text" ng-model="newprotocol.module" name="moduleName" required="" />
+          <br />
+          <div ng-show="newprotocolform.$submitted || newprotocolform.moduleName.$touched">
+            <div ng-show="newprotocolform.moduleName.$error.required"><font color="red">Enter the module name.</font></div>
+          </div>
+
+          Protocol:
+          <input type="text" ng-model="newprotocol.protocol" name="protocolName" required="" />
+          <br />
+          <div ng-show="newprotocolform.$submitted || newprotocolform.protocolName.$touched">
+            <span ng-show="newprotocolform.protocolName.$error.required"><font color="red">Enter the protocol name.</font></span>
+          </div>
+
+          <br />
+          <input type="button" ng-click="reset(newprotocolform)" value="Reset" />
+          <input type="submit" ng-click="create(newprotocol)" value="Create" />
+        </form>
 
       </div>
     </div>
