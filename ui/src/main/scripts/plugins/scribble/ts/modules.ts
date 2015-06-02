@@ -16,7 +16,7 @@
 /// <reference path="scribblePlugin.ts"/>
 module Scribble {
 
-  export var ModulesController = _module.controller("Scribble.ModulesController", ["$scope", "$http", ($scope, $http) => {
+  export var ModulesController = _module.controller("Scribble.ModulesController", ["$scope", "$http", '$location', ($scope, $http, $location) => {
 
     $http.get('/scribble-server/protocols').success(function(data) {
       $scope.modules = data;
@@ -24,6 +24,26 @@ module Scribble {
 
     $scope.nameOrderProp = 'name';
 
+    $scope.master = {};
+
+    $scope.create = function(newprotocol) {
+      var protocolDefn = { definition: "module "+newprotocol.module+
+              ";\r\n\r\nglobal protocol "+newprotocol.protocol+"() {\r\n}\r\n" };
+      		
+    $http.put('/scribble-server/protocols/'+newprotocol.module+'/'+newprotocol.protocol, protocolDefn).success(function(data) {
+        $location.path('/protocols/'+newprotocol.module+'/'+newprotocol.protocol);
+      });
+    };
+
+    $scope.reset = function(form) {
+      if (form) {
+        form.$setPristine();
+        form.$setUntouched();
+      }
+      $scope.newprotocol = angular.copy($scope.master);
+    };
+
+    $scope.reset();
   }]);
 
 }

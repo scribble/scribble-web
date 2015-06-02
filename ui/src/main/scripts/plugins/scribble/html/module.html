@@ -8,7 +8,7 @@
     <h1><b>{{moduleName}}</b> <span style="color:grey">Module</span></h1>
 
     <div class="row">
-      <div class="col-sm-8 col-md-9">
+      <div class="col-md-9">
         Search: <input ng-model="query">
 
         <br>
@@ -22,7 +22,25 @@
           </li>
         </ul>
       </div>
-    </div>
 
+      <div class="col-md-3">
+
+		<h2>Create a new protocol</h2>
+
+        <form name="newprotocolform" class="css-form" novalidate>
+          Protocol:
+          <input type="text" ng-model="newprotocol.protocol" name="protocolName" required="" />
+          <br />
+          <div ng-show="newprotocolform.$submitted || newprotocolform.protocolName.$touched">
+            <span ng-show="newprotocolform.protocolName.$error.required"><font color="red">Enter the protocol name.</font></span>
+          </div>
+
+          <br />
+          <input type="button" ng-click="reset(newprotocolform)" value="Reset" />
+          <input type="submit" ng-click="create(newprotocol)" value="Create" />
+        </form>
+
+      </div>
+    </div>
   </div>
 </div>
