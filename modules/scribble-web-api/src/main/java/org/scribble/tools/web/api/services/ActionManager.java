@@ -17,10 +17,12 @@
 package org.scribble.tools.web.api.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.scribble.tools.web.api.model.Marker;
 import org.scribble.tools.web.api.model.ProjectProtocolAction;
 import org.scribble.tools.web.api.model.ProtocolProjection;
+import org.scribble.tools.web.api.model.RoleInfo;
 import org.scribble.tools.web.api.model.VerifyProtocolAction;
 
 /**
@@ -44,5 +46,15 @@ public interface ActionManager {
      * @return The projection result
      */
     ProtocolProjection project(ProjectProtocolAction action);
+
+    /**
+     * This method returns the role information associated with the
+     * supplied module and protocol.
+     * 
+     * @param moduleName The module name
+     * @param protocolName The protocol name
+     * @return The set of role information
+     */
+    Set<RoleInfo> getRoles(String moduleName, String protocolName);
 
 }
