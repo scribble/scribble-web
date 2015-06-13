@@ -21,7 +21,6 @@ import java.util.Set;
 import org.scribble.tools.web.api.model.Module;
 import org.scribble.tools.web.api.model.Protocol;
 import org.scribble.tools.web.api.model.ProtocolInfo;
-import org.scribble.tools.web.api.model.RoleInfo;
 
 /**
  * @author gbrown
@@ -37,6 +36,18 @@ public interface DefinitionManager {
      * @throws Exception Failed to update protocol
      */
     public void updateProtocol(String moduleName, String protocolName, Protocol definition) throws Exception;
+    
+    /**
+     * This method updates a protocol definition.
+     * 
+     * @param fromModuleName The module name
+     * @param fromProtocolName The protocol name
+     * @param toModuleName The module name
+     * @param toProtocolName The protocol name
+     * @throws Failed to rename
+     */
+    public void renameProtocol(String fromModuleName, String fromProtocolName,
+            String toModuleName, String toProtocolName) throws Exception;
     
     /**
      * This method returns the definition associated with the supplied

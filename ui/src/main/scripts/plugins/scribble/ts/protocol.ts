@@ -16,7 +16,7 @@
 /// <reference path="scribblePlugin.ts"/>
 module Scribble {
 
-  export var ProtocolController = _module.controller("Scribble.ProtocolController", ["$scope", "$routeParams", "$http", ($scope, $routeParams, $http) => {
+  export var ProtocolController = _module.controller("Scribble.ProtocolController", ["$scope", "$routeParams", "$http", '$location', ($scope, $routeParams, $http, $location) => {
 
     $scope.moduleName = $routeParams.module;
     $scope.protocolName = $routeParams.protocol;
@@ -32,22 +32,11 @@ module Scribble {
     $scope.saveProtocol = function() {
       return $http.put('/scribble-server/protocols/'+$scope.moduleName+'/'+$scope.protocolName, $scope.protocol)
         .success(function(data, status, headers, config) {
-        var verifyAction = {
-            module: $scope.moduleName,
-            protocol: $scope.protocolName
-        };
-        
-        $http.post('/scribble-server/actions/verify', verifyAction).success(function(data) {
-          $scope.markers = data;
-
-          if ($scope.currentMarker !== undefined) {
-            $scope.currentMarker.clear();
-          }
-
-          $http.get('/scribble-server/actions/roles/'+$scope.moduleName+'/'+$scope.protocolName).success(function(data) {
-            $scope.roles = data;
-          });
-        });
+        if ($scope.moduleName !== data.module || $scope.protocolName !== data.name) {
+          $location.path('/protocols/'+data.module+'/'+data.name);
+        } else {
+          $scope.verify();
+        }
       });
     };
 
@@ -95,6 +84,27 @@ module Scribble {
       
       $scope.doc.markClean();
     };
+
+    $scope.verify = function() {
+      var verifyAction = {
+        module: $scope.moduleName,
+        protocol: $scope.protocolName
+      };
+    
+      $http.post('/scribble-server/actions/verify', verifyAction).success(function(data) {
+        $scope.markers = data;
+
+        if ($scope.currentMarker !== undefined) {
+          $scope.currentMarker.clear();
+        }
+
+        $http.get('/scribble-server/actions/roles/'+$scope.moduleName+'/'+$scope.protocolName).success(function(data) {
+          $scope.roles = data;
+        });
+      });
+    };
+    
+    $scope.verify();
   }]);
 
 }
