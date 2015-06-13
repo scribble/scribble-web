@@ -34,6 +34,7 @@ import org.scribble.resources.Resource;
 import org.scribble.tools.web.api.model.Marker;
 import org.scribble.tools.web.api.model.ProjectProtocolAction;
 import org.scribble.tools.web.api.model.Protocol;
+import org.scribble.tools.web.api.model.ProtocolInfo;
 import org.scribble.tools.web.api.model.ProtocolProjection;
 import org.scribble.tools.web.api.model.RoleInfo;
 import org.scribble.tools.web.api.model.VerifyProtocolAction;
@@ -192,6 +193,47 @@ public class DefaultActionManager implements ActionManager {
             }
         }
         
+        return ret;
+    }
+
+    /* (non-Javadoc)
+     * @see org.scribble.tools.web.api.services.ActionManager#getInfo(java.lang.String, java.lang.String)
+     */
+    @Override
+    public ProtocolInfo getInfo(String moduleName, String protocolName) {
+        ProtocolInfo ret=new ProtocolInfo();
+        ret.setModule(moduleName);
+        ret.setName(protocolName);
+
+        Protocol p=definitionManager.getProtocol(moduleName, protocolName);
+        
+        if (p != null) {
+            ProtocolParser pp=new ProtocolParser();
+            
+            MarkerIssueLogger logger=new MarkerIssueLogger();
+            
+            ByteArrayInputStream is=new ByteArrayInputStream(p.getDefinition().getBytes());
+            
+            Resource res=new InputStreamResource(protocolName, is);
+            
+            try {
+                Module module=pp.parse(res, null, logger);
+                
+                if (logger.getMarkers().isEmpty()) {
+                    ret.setModule(module.getName());
+                    
+                    if (module.getProtocol(protocolName) == null &&
+                            module.getProtocols().size() > 0) {
+                        // Use the first protocol name
+                        ret.setName(module.getProtocols().get(0).getName());
+                    }
+                }
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
         return ret;
     }
 

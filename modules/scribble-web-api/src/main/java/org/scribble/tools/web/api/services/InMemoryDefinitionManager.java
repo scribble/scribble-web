@@ -27,7 +27,6 @@ import javax.inject.Singleton;
 import org.scribble.tools.web.api.model.Module;
 import org.scribble.tools.web.api.model.Protocol;
 import org.scribble.tools.web.api.model.ProtocolInfo;
-import org.scribble.tools.web.api.model.RoleInfo;
 
 /**
  * @author gbrown
@@ -88,6 +87,7 @@ public class InMemoryDefinitionManager implements DefinitionManager {
                 
                 for (String protocol : protocols.get(moduleName).keySet()) {
                     ProtocolInfo pi=new ProtocolInfo();
+                    pi.setModule(moduleName);
                     pi.setName(protocol);
                     
                     Protocol p=protocols.get(moduleName).get(protocol);
@@ -100,6 +100,40 @@ public class InMemoryDefinitionManager implements DefinitionManager {
                 return ret;
             }
             return Collections.emptySet();
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.scribble.tools.web.api.services.DefinitionManager#renameProtocol(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
+    public void renameProtocol(String fromModuleName, String fromProtocolName, String toModuleName,
+                                String toProtocolName) throws Exception {
+
+        if (fromModuleName.equals(toModuleName) && fromProtocolName.equals(toProtocolName)) {
+            throw new Exception("Can't rename protocol to itself!");
+        }
+
+        synchronized (protocols) {
+            Map<String,Protocol> map=protocols.get(fromModuleName);
+            
+            if (map != null) {
+                if (map.containsKey(fromProtocolName)) {
+                    Protocol p=map.get(fromProtocolName);
+                    
+                    updateProtocol(toModuleName, toProtocolName, p);
+                    
+                    map.remove(fromProtocolName);
+                    
+                    if (map.size() == 0) {
+                        protocols.remove(fromModuleName);
+                    }
+                } else {
+                    throw new Exception("Unable to find protocol '"+fromProtocolName+"'");
+                }
+            } else {
+                throw new Exception("Unable to find module '"+fromModuleName+"'");
+            }
         }
     }
 

@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.scribble.tools.web.api.model.Marker;
 import org.scribble.tools.web.api.model.ProjectProtocolAction;
+import org.scribble.tools.web.api.model.ProtocolInfo;
 import org.scribble.tools.web.api.model.ProtocolProjection;
 import org.scribble.tools.web.api.model.RoleInfo;
 import org.scribble.tools.web.api.model.VerifyProtocolAction;
@@ -29,6 +30,16 @@ import org.scribble.tools.web.api.model.VerifyProtocolAction;
  * @author gbrown
  */
 public interface ActionManager {
+
+    /**
+     * This method parses the identified module and protocol to
+     * provide the protocol information.
+     *
+     * @param moduleName The module name
+     * @param protocolName The protocol
+     * @return The protocol information
+     */
+    ProtocolInfo getInfo(String moduleName, String protocolName);
 
     /**
      * This method verifies the protocol associated with the supplied

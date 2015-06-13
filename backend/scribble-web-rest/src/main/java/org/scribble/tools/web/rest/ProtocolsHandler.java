@@ -22,7 +22,6 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -36,8 +35,8 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
 
 import org.scribble.tools.web.api.model.Protocol;
-import org.scribble.tools.web.api.model.ProtocolProjection;
-import org.scribble.tools.web.api.model.RoleInfo;
+import org.scribble.tools.web.api.model.ProtocolInfo;
+import org.scribble.tools.web.api.services.ActionManager;
 import org.scribble.tools.web.api.services.DefinitionManager;
 
 import com.wordnik.swagger.annotations.Api;
@@ -60,14 +59,19 @@ public class ProtocolsHandler {
     
     @Inject
     private DefinitionManager definitionManager;
+    
+    @Inject
+    private ActionManager actionManager;
 
     @PUT
     @Path("/{module}/{protocol}")
-    @ApiOperation(value = "Create or update a protocol definition")
+    @ApiOperation(
+            value = "Create or update a protocol definition",
+            response = ProtocolInfo.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Create or update protocol succeeded."),
             @ApiResponse(code = 500, message = "Unexpected error happened while creating or updating the protocol") })
-    public void createProtocol(
+    public void updateProtocol(
             @Suspended final AsyncResponse response,
             @ApiParam(required = true, value = "The module name") @PathParam("module") String moduleName,
             @ApiParam(required = true, value = "The protocol name") @PathParam("protocol") String protocolName,
@@ -75,8 +79,15 @@ public class ProtocolsHandler {
 
         try {
             definitionManager.updateProtocol(moduleName, protocolName, definition);
+            
+            // Check if protocol definitions module or protocol name have changed
+            ProtocolInfo pi=actionManager.getInfo(moduleName, protocolName);
+            
+            if (!pi.getModule().equals(moduleName) || !pi.getName().equals(protocolName)) {
+                definitionManager.renameProtocol(moduleName, protocolName, pi.getModule(), pi.getName());
+            }
 
-            response.resume(Response.status(Response.Status.OK).build());
+            response.resume(Response.status(Response.Status.OK).entity(pi).build());
 
         } catch (Throwable t) {
             Map<String, String> errors = new HashMap<String, String>();

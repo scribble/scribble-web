@@ -23,9 +23,24 @@ package org.scribble.tools.web.api.model;
  */
 public class ProtocolInfo {
 
+    private String module;
     private String name;
     private String description;
     private String author;
+
+    /**
+     * @return the module
+     */
+    public String getModule() {
+        return module;
+    }
+
+    /**
+     * @param module the module to set
+     */
+    public void setModule(String module) {
+        this.module = module;
+    }
 
     /**
      * @return the name
@@ -67,6 +82,15 @@ public class ProtocolInfo {
      */
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "ProtocolInfo [module=" + module + ", name=" + name + ", description=" + description + ", author="
+                + author + "]";
     }
 
 }
