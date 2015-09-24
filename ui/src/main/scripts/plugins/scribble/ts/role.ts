@@ -22,16 +22,9 @@ module Scribble {
   export var RoleController = _module.controller("Scribble.RoleController", ["$scope", "$routeParams", "$http", ($scope, $routeParams, $http) => {
 
     $scope.moduleName = $routeParams.module;
-    $scope.protocolName = $routeParams.protocol;
     $scope.roleName = $routeParams.role;
     
-    $scope.projectAction = {
-      module: $scope.moduleName,
-      protocol: $scope.protocolName,
-      role: $scope.roleName
-    };
-    
-    $http.post('/scribble-server/actions/project', $scope.projectAction).success(function(data) {
+    $http.post('/scribble-server/actions/project/'+$scope.moduleName+'/'+$scope.roleName).success(function(data) {
       $scope.projection = data;
       
       if ($scope.projection.graph !== undefined) {

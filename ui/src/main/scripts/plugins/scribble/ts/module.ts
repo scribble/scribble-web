@@ -19,33 +19,87 @@ module Scribble {
   export var ModuleController = _module.controller("Scribble.ModuleController", ["$scope", "$routeParams", "$http", '$location', ($scope, $routeParams, $http, $location) => {
 
     $scope.moduleName = $routeParams.module;
-
-    $http.get('/scribble-server/protocols/'+$scope.moduleName).success(function(data) {
-      $scope.protocols = data;
+    
+    $http.get('/scribble-server/modules/'+$scope.moduleName).success(function(data) {
+      $scope.module = data;
     });
 
-    $scope.nameOrderProp = 'name';
+    $http.get('/scribble-server/actions/roles/'+$scope.moduleName).success(function(data) {
+      $scope.roles = data;
+    });
 
-    $scope.master = {};
-
-    $scope.create = function(newprotocol) {
-      var protocolDefn = { definition: "module "+$scope.moduleName+
-               ";\r\n\r\nglobal protocol "+newprotocol.protocol+"() {\r\n}\r\n" };
-      		
-      $http.put('/scribble-server/protocols/'+$scope.moduleName+'/'+newprotocol.protocol, protocolDefn).success(function(data) {
-        $location.path('/protocols/'+$scope.moduleName+'/'+newprotocol.protocol);
+    $scope.saveModule = function() {
+      return $http.put('/scribble-server/modules/'+$scope.moduleName, $scope.module)
+        .success(function(data, status, headers, config) {
+        //if ($scope.moduleName !== data.module) {
+        //  $location.path('/modules/'+data.module);
+        //} else {
+          $scope.verify();
+        //}
       });
     };
 
-    $scope.reset = function(form) {
-      if (form) {
-        form.$setPristine();
-        form.$setUntouched();
-      }
-      $scope.newprotocol = angular.copy($scope.master);
+    $scope.restoreModule = function() {
+      $http.get('/scribble-server/modules/'+$scope.moduleName).success(function(data) {
+        $scope.module = data;
+
+        $http.get('/scribble-server/actions/roles/'+$scope.moduleName).success(function(data) {
+          $scope.roles = data;
+        });
+      });
     };
 
-    $scope.reset();
+    $scope.selectedMarker = function(marker) {
+      if ($scope.currentMarker !== undefined) {
+        $scope.currentMarker.clear();
+      }
+
+      $scope.currentMarker = $scope.doc.markText(
+        {line: marker.startLine-1, ch: marker.startPos},
+        {line: marker.endLine-1, ch: marker.endPos},
+        {className: "styled-background"}
+      );
+    };
+
+    $scope.editorOptions = {
+      lineWrapping : true,
+      lineNumbers: true,
+      mode: 'scribble'
+    };
+
+    $scope.nameOrderProp = 'name';
+
+    $scope.codemirrorLoaded = function(_editor) {
+      $scope.editor = _editor;
+      $scope.doc = _editor.getDoc();
+      
+      // Editor part
+      _editor.focus();
+
+      // Options
+      _editor.setOption('lineWrapping', true);
+      _editor.setOption('lineNumbers', true);
+      _editor.setOption('mode', 'scribble');
+      
+      $scope.doc.markClean();
+    };
+
+    $scope.verify = function() {
+    
+      $http.post('/scribble-server/actions/verify/'+$scope.moduleName).success(function(data) {
+        $scope.markers = data;
+
+        if ($scope.currentMarker !== undefined) {
+          $scope.currentMarker.clear();
+        }
+
+        $http.get('/scribble-server/actions/roles/'+$scope.moduleName).success(function(data) {
+          $scope.roles = data;
+        });
+      });
+    };
+    
+    $scope.verify();
   }]);
 
 }

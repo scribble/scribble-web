@@ -18,7 +18,7 @@ module Scribble {
 
   export var ModulesController = _module.controller("Scribble.ModulesController", ["$scope", "$http", '$location', ($scope, $http, $location) => {
 
-    $http.get('/scribble-server/protocols').success(function(data) {
+    $http.get('/scribble-server/modules').success(function(data) {
       $scope.modules = data;
     });
 
@@ -26,12 +26,12 @@ module Scribble {
 
     $scope.master = {};
 
-    $scope.create = function(newprotocol) {
-      var protocolDefn = { definition: "module "+newprotocol.module+
-              ";\r\n\r\nglobal protocol "+newprotocol.protocol+"() {\r\n}\r\n" };
+    $scope.create = function(newmodule) {
+      var moduleDefn = { data: "module "+newmodule.name+
+              ";\r\n\r\nglobal protocol Name() {\r\n}\r\n" };
       		
-    $http.put('/scribble-server/protocols/'+newprotocol.module+'/'+newprotocol.protocol, protocolDefn).success(function(data) {
-        $location.path('/protocols/'+newprotocol.module+'/'+newprotocol.protocol);
+      $http.put('/scribble-server/modules/'+newmodule.name, moduleDefn).success(function(data) {
+        $location.path('/modules/'+newmodule.name);
       });
     };
 
@@ -40,7 +40,7 @@ module Scribble {
         form.$setPristine();
         form.$setUntouched();
       }
-      $scope.newprotocol = angular.copy($scope.master);
+      $scope.newmodule = angular.copy($scope.master);
     };
 
     $scope.reset();

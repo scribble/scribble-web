@@ -14,18 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.model;
+package org.scribble.tools.api;
 
 /**
- * This class represents the information about a protocol definition.
+ * This class represents the information associated with content.
  *
  * @author gbrown
  */
-public class Protocol {
+public class Content {
 
     private String description;
     private String author;
-    private String definition;
+    private String data;
     private long created;
     private long lastModified;
 
@@ -58,17 +58,17 @@ public class Protocol {
     }
 
     /**
-     * @return the definition
+     * @return the data
      */
-    public String getDefinition() {
-        return definition;
+    public String getData() {
+        return data;
     }
 
     /**
-     * @param definition the definition to set
+     * @param data the data to set
      */
-    public void setDefinition(String definition) {
-        this.definition = definition;
+    public void setData(String data) {
+        this.data = data;
     }
 
     /**

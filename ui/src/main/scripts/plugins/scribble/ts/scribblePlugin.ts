@@ -25,25 +25,21 @@ module Scribble {
     ($locationProvider, $routeProvider: ng.route.IRouteProvider, builder: HawtioMainNav.BuilderFactory) => {
     tab = builder.create()
       .id(Scribble.pluginName)
-      .title(() => "Protocols")
-      .href(() => "/protocols")
+      .title(() => "Modules")
+      .href(() => "/modules")
       .build();
     builder.configureRouting($routeProvider, tab);
     $locationProvider.html5Mode(true);
     $routeProvider.
-      when('/protocols', {
+      when('/modules', {
         templateUrl: 'plugins/scribble/html/modules.html',
         controller: 'Scribble.ModulesController'
       }).
-      when('/protocols/:module', {
+      when('/modules/:module', {
         templateUrl: 'plugins/scribble/html/module.html',
         controller: 'Scribble.ModuleController'
       }).
-      when('/protocols/:module/:protocol', {
-        templateUrl: 'plugins/scribble/html/protocol.html',
-        controller: 'Scribble.ProtocolController'
-      }).
-      when('/protocols/:module/:protocol/role/:role', {
+      when('/modules/:module/role/:role', {
         templateUrl: 'plugins/scribble/html/role.html',
         controller: 'Scribble.RoleController'
       });

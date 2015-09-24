@@ -19,6 +19,8 @@ package org.scribble.tools.web.rest;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +36,9 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
 
-import org.scribble.tools.web.api.model.Protocol;
-import org.scribble.tools.web.api.model.ProtocolInfo;
-import org.scribble.tools.web.api.services.ActionManager;
-import org.scribble.tools.web.api.services.DefinitionManager;
+import org.scribble.tools.api.Content;
+import org.scribble.tools.api.ContentManager;
+import org.scribble.tools.api.ModuleUtil;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -46,48 +47,36 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 
 /**
- * REST interface for managing scribble protocols.
+ * REST interface for managing scribble modules.
  *
  * @author gbrown
  *
  */
-@Path("/protocols")
+@Path("/modules")
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
-@Api(value = "/", description = "Protocol management")
-public class ProtocolsHandler {
+@Api(value = "/", description = "Module management")
+public class ModulesHandler {
     
     @Inject
-    private DefinitionManager definitionManager;
+    private ContentManager contentManager;
     
-    @Inject
-    private ActionManager actionManager;
-
     @PUT
-    @Path("/{module}/{protocol}")
+    @Path("/{module}")
     @ApiOperation(
-            value = "Create or update a protocol definition",
-            response = ProtocolInfo.class)
+            value = "Create or update a module definition")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Create or update protocol succeeded."),
-            @ApiResponse(code = 500, message = "Unexpected error happened while creating or updating the protocol") })
+            @ApiResponse(code = 200, message = "Create or update module succeeded."),
+            @ApiResponse(code = 500, message = "Unexpected error happened while creating or updating the module") })
     public void updateProtocol(
             @Suspended final AsyncResponse response,
             @ApiParam(required = true, value = "The module name") @PathParam("module") String moduleName,
-            @ApiParam(required = true, value = "The protocol name") @PathParam("protocol") String protocolName,
-            @ApiParam(value = "The protocol definition", required = true) Protocol definition) {
+            @ApiParam(value = "The module definition", required = true) Content content) {
 
         try {
-            definitionManager.updateProtocol(moduleName, protocolName, definition);
+            contentManager.setContent(ModuleUtil.getPath(moduleName), content);
             
-            // Check if protocol definitions module or protocol name have changed
-            ProtocolInfo pi=actionManager.getInfo(moduleName, protocolName);
-            
-            if (!pi.getModule().equals(moduleName) || !pi.getName().equals(protocolName)) {
-                definitionManager.renameProtocol(moduleName, protocolName, pi.getModule(), pi.getName());
-            }
-
-            response.resume(Response.status(Response.Status.OK).entity(pi).build());
+            response.resume(Response.status(Response.Status.OK).build());
 
         } catch (Throwable t) {
             Map<String, String> errors = new HashMap<String, String>();
@@ -98,26 +87,25 @@ public class ProtocolsHandler {
     }
 
     @GET
-    @Path("/{module}/{protocol}")
+    @Path("/{module}")
     @Produces(APPLICATION_JSON)
     @ApiOperation(
-            value = "Retrieve protocol definition for module and protocol name",
-            response = Protocol.class)
+            value = "Retrieve definition for module name",
+            response = Content.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success, protocol definition found and returned"),
+            @ApiResponse(code = 200, message = "Success, module definition found and returned"),
             @ApiResponse(code = 500, message = "Internal server error"),
-            @ApiResponse(code = 400, message = "Unknown module and/or protocol name") })
-    public void getProtocol(@Suspended final AsyncResponse response,
-            @ApiParam(required = true, value = "The module") @PathParam("module") String moduleName,
-            @ApiParam(required = true, value = "The protocol name") @PathParam("protocol") String protocolName) {
+            @ApiResponse(code = 400, message = "Unknown module name") })
+    public void getModule(@Suspended final AsyncResponse response,
+            @ApiParam(required = true, value = "The module") @PathParam("module") String moduleName) {
 
         try {
-            Protocol protocol = definitionManager.getProtocol(moduleName, protocolName);
+            Content content = contentManager.getContent(ModuleUtil.getPath(moduleName));
 
-            if (protocol == null) {
+            if (content == null) {
                 response.resume(Response.status(Response.Status.BAD_REQUEST).type(APPLICATION_JSON_TYPE).build());
             } else {
-                response.resume(Response.status(Response.Status.OK).entity(protocol).type(APPLICATION_JSON_TYPE)
+                response.resume(Response.status(Response.Status.OK).entity(content).type(APPLICATION_JSON_TYPE)
                         .build());
             }
         } catch (Exception e) {
@@ -141,36 +129,22 @@ public class ProtocolsHandler {
     public void getModules(@Suspended final AsyncResponse response) {
 
         try {
+            List<org.scribble.tools.api.Path> paths=contentManager.getContentPaths(
+                    new org.scribble.tools.api.Path("/"));
+
+            List<String> moduleNames=new ArrayList<String>();
+            
+            for (org.scribble.tools.api.Path path : paths) {
+                moduleNames.add(ModuleUtil.getModule(path));
+            }
+            
+            // Sort the list before returning
+            Collections.sort(moduleNames);
+
             response.resume(Response.status(Response.Status.OK).entity(
-                    definitionManager.getModules()).type(APPLICATION_JSON_TYPE)
-                        .build());
+                    moduleNames).type(APPLICATION_JSON_TYPE).build());
         } catch (Exception e) {
-            Map<String, String> errors = new HashMap<String, String>();
-            errors.put("errorMsg", "Internal Error: " + e.getMessage());
-            response.resume(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(errors).type(APPLICATION_JSON_TYPE).build());
-        }
-
-    }
-
-    @GET
-    @Path("/{module}")
-    @Produces(APPLICATION_JSON)
-    @ApiOperation(
-            value = "Retrieve protocol names within specified module",
-            response = String.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success, module protocol names found and returned"),
-            @ApiResponse(code = 500, message = "Internal server error"),
-            @ApiResponse(code = 400, message = "Unknown module name") })
-    public void getProtocols(@Suspended final AsyncResponse response,
-            @ApiParam(required = true, value = "The module") @PathParam("module") String moduleName) {
-
-        try {
-            response.resume(Response.status(Response.Status.OK).entity(
-                    definitionManager.getProtocols(moduleName)).type(APPLICATION_JSON_TYPE)
-                        .build());
-        } catch (Exception e) {
+            e.printStackTrace();
             Map<String, String> errors = new HashMap<String, String>();
             errors.put("errorMsg", "Internal Error: " + e.getMessage());
             response.resume(Response.status(Response.Status.INTERNAL_SERVER_ERROR)

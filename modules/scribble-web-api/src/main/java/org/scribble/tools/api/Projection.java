@@ -14,17 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.model;
+package org.scribble.tools.api;
 
 /**
  * This class provides the results of a protocol projection.
  * 
  * @author gbrown
  */
-public class ProtocolProjection {
+public class Projection {
 
+    private String role;
     private String definition;
     private String graph;
+
+    /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     /**
      * @return the definition
