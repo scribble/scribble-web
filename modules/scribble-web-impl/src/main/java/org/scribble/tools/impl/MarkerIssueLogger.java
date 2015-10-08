@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.impl.services;
+package org.scribble.tools.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,22 +22,22 @@ import java.util.Map;
 
 import org.scribble.logging.IssueLogger;
 import org.scribble.model.ModelObject;
-import org.scribble.tools.web.api.model.Marker;
-import org.scribble.tools.web.api.model.Marker.Severity;
+import org.scribble.tools.api.Issue;
+import org.scribble.tools.api.Issue.Severity;
 
 /**
  * @author gbrown
  */
 public class MarkerIssueLogger implements IssueLogger {
     
-    private List<Marker> markers=new ArrayList<Marker>();
+    private List<Issue> markers=new ArrayList<Issue>();
 
     /**
      * This method returns the markers.
      *
      * @return The markers
      */
-    public List<Marker> getMarkers() {
+    public List<Issue> getIssues() {
         return markers;
     }
 
@@ -47,7 +47,7 @@ public class MarkerIssueLogger implements IssueLogger {
     @Override
     public void error(String arg0, Map<String, Object> arg1) {
         //System.out.println("ERROR: "+arg0);
-        Marker marker=new Marker();
+        Issue marker=new Issue();
         marker.setDescription(arg0);
         marker.setSeverity(Severity.Error);
         if (arg1.containsKey("start.line")) {
@@ -71,7 +71,7 @@ public class MarkerIssueLogger implements IssueLogger {
     @Override
     public void error(String arg0, ModelObject arg1) {
         //System.out.println("ERROR: "+arg0);
-        Marker marker=new Marker();
+        Issue marker=new Issue();
         marker.setDescription(arg0);
         marker.setSeverity(Severity.Error);
         if (arg1.getProperties().containsKey("start.line")) {
@@ -111,7 +111,7 @@ public class MarkerIssueLogger implements IssueLogger {
     @Override
     public void warning(String arg0, Map<String, Object> arg1) {
         //System.out.println("WARNING: "+arg0);
-        Marker marker=new Marker();
+        Issue marker=new Issue();
         marker.setDescription(arg0);
         marker.setSeverity(Severity.Warning);
         if (arg1.containsKey("start.line")) {
@@ -135,7 +135,7 @@ public class MarkerIssueLogger implements IssueLogger {
     @Override
     public void warning(String arg0, ModelObject arg1) {
         //System.out.println("WARNING: "+arg0);
-        Marker marker=new Marker();
+        Issue marker=new Issue();
         marker.setDescription(arg0);
         marker.setSeverity(Severity.Warning);
         if (arg1.getProperties().containsKey("start.line")) {

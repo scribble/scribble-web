@@ -19,10 +19,11 @@ package org.scribble.tools.web.rest;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -35,12 +36,10 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
 
-import org.scribble.tools.web.api.model.Marker;
-import org.scribble.tools.web.api.model.ProjectProtocolAction;
-import org.scribble.tools.web.api.model.ProtocolProjection;
-import org.scribble.tools.web.api.model.RoleInfo;
-import org.scribble.tools.web.api.model.VerifyProtocolAction;
-import org.scribble.tools.web.api.services.ActionManager;
+import org.scribble.tools.api.Issue;
+import org.scribble.tools.api.Projection;
+import org.scribble.tools.api.ModuleUtil;
+import org.scribble.tools.api.ToolManager;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -57,27 +56,32 @@ import com.wordnik.swagger.annotations.ApiResponses;
 @Path("/actions")
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
-@Api(value = "/", description = "Perform actions on scribble protocols")
+@Api(value = "/", description = "Perform actions on scribble modules")
 public class ActionsHandler {
     
     @Inject
-    private ActionManager actionManager;
+    private ToolManager toolManager;
 
     @POST
-    @Path("/project")
-    @ApiOperation(value = "Project a protocol definition",
-            response = ProtocolProjection.class)
+    @Path("/project/{module}/{role}")
+    @ApiOperation(value = "Project a module definition",
+            response = Projection.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully projected a protocol"),
-            @ApiResponse(code = 500, message = "Failed to project the protocol") })
+            @ApiResponse(code = 200, message = "Successfully projected a module"),
+            @ApiResponse(code = 500, message = "Failed to project the module") })
     public void projectProtocol(
             @Suspended final AsyncResponse response,
-            @ApiParam(value = "The projection action details", required = true) ProjectProtocolAction action) {
+            @ApiParam(value = "The module", required = true) @PathParam("module") String moduleName,
+            @ApiParam(value = "The role", required = true) @PathParam("role") String roleName) {
 
         try {
-            ProtocolProjection result=actionManager.project(action);
+            Map<String,Projection> result=toolManager.project(ModuleUtil.getPath(moduleName));
 
-            response.resume(Response.status(Response.Status.OK).entity(result).build());
+            if (result == null || !result.containsKey(roleName)) {
+                response.resume(Response.status(Response.Status.NOT_FOUND).build());
+            } else {
+                response.resume(Response.status(Response.Status.OK).entity(result.get(roleName)).build());
+            }
 
         } catch (Throwable t) {
             Map<String, String> errors = new HashMap<String, String>();
@@ -88,18 +92,18 @@ public class ActionsHandler {
     }
 
     @POST
-    @Path("/verify")
-    @ApiOperation(value = "Verify a protocol definition",
+    @Path("/verify/{module}")
+    @ApiOperation(value = "Verify a module definition",
             response = List.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Verified a protocol"),
-            @ApiResponse(code = 500, message = "Failed to verify the protocol") })
-    public void verifyProtocol(
+            @ApiResponse(code = 200, message = "Verified a module"),
+            @ApiResponse(code = 500, message = "Failed to verify the module") })
+    public void verifyModule(
             @Suspended final AsyncResponse response,
-            @ApiParam(value = "The verification action details", required = true) VerifyProtocolAction action) {
+            @ApiParam(value = "The module name", required = true) @PathParam("module") String moduleName) {
 
         try {
-            List<Marker> result=actionManager.verify(action);
+            List<Issue> result=toolManager.validate(ModuleUtil.getPath(moduleName));
 
             response.resume(Response.status(Response.Status.OK).entity(result).build());
 
@@ -112,31 +116,29 @@ public class ActionsHandler {
     }
 
     @GET
-    @Path("/roles/{module}/{protocol}")
+    @Path("/roles/{module}")
     @Produces(APPLICATION_JSON)
     @ApiOperation(
-            value = "Retrieve roles for module and protocol name",
-            response = Set.class)
+            value = "Retrieve roles for module name",
+            response = List.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success, protocol definition found and returned"),
+            @ApiResponse(code = 200, message = "Success, roles found and returned"),
             @ApiResponse(code = 500, message = "Internal server error"),
-            @ApiResponse(code = 400, message = "Unknown module and/or protocol name") })
+            @ApiResponse(code = 400, message = "Unknown module name") })
     public void getRoles(@Suspended final AsyncResponse response,
-            @ApiParam(required = true, value = "The module") @PathParam("module") String moduleName,
-            @ApiParam(required = true, value = "The protocol name") @PathParam("protocol") String protocolName) {
+            @ApiParam(required = true, value = "The module") @PathParam("module") String moduleName) {
 
         try {
-            Set<RoleInfo> roles = actionManager.getRoles(moduleName, protocolName);
+            Map<String,Projection> result=toolManager.project(ModuleUtil.getPath(moduleName));
 
-            if (roles == null) {
-                response.resume(Response.status(Response.Status.BAD_REQUEST).type(APPLICATION_JSON_TYPE).build());
-            } else {
-                response.resume(Response.status(Response.Status.OK).entity(roles).type(APPLICATION_JSON_TYPE)
-                        .build());
-            }
-        } catch (Exception e) {
+            List<String> roles=new ArrayList<String>(result.keySet());
+            Collections.sort(roles);
+
+            response.resume(Response.status(Response.Status.OK).entity(roles).build());
+
+        } catch (Throwable t) {
             Map<String, String> errors = new HashMap<String, String>();
-            errors.put("errorMsg", "Internal Error: " + e.getMessage());
+            errors.put("errorMsg", "Internal Error: " + t.getMessage());
             response.resume(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(errors).type(APPLICATION_JSON_TYPE).build());
         }

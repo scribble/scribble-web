@@ -10,39 +10,31 @@
         <br>
 
         <ul class="list-group" >
-          <li ng-repeat="module in modules | orderBy:nameOrderProp | filter:query" class="list-group-item" >
-            <h3><a href="/protocols/{{module.name}}">{{module.name}}</a></h3>
-            <p><i>Number of protocols: {{module.numberOfProtocols}}</i></p>
+          <li ng-repeat="module in modules | filter:query" class="list-group-item" >
+            <h3><a href="/modules/{{module}}">{{module}}</a></h3>
           </li>
        </ul>
-
       </div>
 
       <div class="col-md-3">
 
-		<h2>Create a new protocol</h2>
+		<h2>Create a new module</h2>
 
-        <form name="newprotocolform" class="css-form" novalidate>
+        <form name="newmoduleform" class="css-form" novalidate>
           Module:
-          <input type="text" ng-model="newprotocol.module" name="moduleName" required="" />
+          <input type="text" ng-model="newmodule.name" name="moduleName" required="" />
           <br />
-          <div ng-show="newprotocolform.$submitted || newprotocolform.moduleName.$touched">
-            <div ng-show="newprotocolform.moduleName.$error.required"><font color="red">Enter the module name.</font></div>
-          </div>
-
-          Protocol:
-          <input type="text" ng-model="newprotocol.protocol" name="protocolName" required="" />
-          <br />
-          <div ng-show="newprotocolform.$submitted || newprotocolform.protocolName.$touched">
-            <span ng-show="newprotocolform.protocolName.$error.required"><font color="red">Enter the protocol name.</font></span>
+          <div ng-show="newmoduleform.$submitted || newmoduleform.moduleName.$touched">
+            <div ng-show="newmoduleform.moduleName.$error.required"><font color="red">Enter the module name.</font></div>
           </div>
 
           <br />
-          <input type="button" ng-click="reset(newprotocolform)" value="Reset" />
-          <input type="submit" ng-click="create(newprotocol)" value="Create" />
+          <input type="button" ng-click="reset(newmoduleform)" value="Reset" />
+          <input type="submit" ng-click="create(newmodule)" value="Create" />
         </form>
 
       </div>
+
     </div>
   </div>
 </div>

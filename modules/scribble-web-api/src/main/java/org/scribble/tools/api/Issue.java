@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.web.api.model;
+package org.scribble.tools.api;
 
 /**
  * This class provides the marker information associated with
@@ -22,8 +22,9 @@ package org.scribble.tools.web.api.model;
  * 
  * @author gbrown
  */
-public class Marker {
+public class Issue {
 
+    private Path path;
     private String description;
     private Severity severity;
     private int startLine=-1;
@@ -31,6 +32,20 @@ public class Marker {
     private int endLine=-1;
     private int endPos=-1;
     
+    /**
+     * @return the path
+     */
+    public Path getPath() {
+        return path;
+    }
+
+    /**
+     * @param path the path to set
+     */
+    public void setPath(Path path) {
+        this.path = path;
+    }
+
     /**
      * @return the description
      */
