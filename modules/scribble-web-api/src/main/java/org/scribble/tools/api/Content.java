@@ -30,6 +30,25 @@ public class Content {
     private long lastModified;
 
     /**
+     * This is the default constructor.
+     */
+    public Content() {
+    }
+
+    /**
+     * The copy constructor.
+     *
+     * @param content The contents to copy
+     */
+    public Content(Content content) {
+        description = content.description;
+        author = content.author;
+        data = content.data;
+        created = content.created;
+        lastModified = content.lastModified;
+    }
+
+    /**
      * @return the description
      */
     public String getDescription() {
