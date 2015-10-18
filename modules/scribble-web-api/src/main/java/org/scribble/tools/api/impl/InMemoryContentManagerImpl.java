@@ -85,4 +85,12 @@ public class InMemoryContentManagerImpl implements ContentManager {
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.scribble.tools.api.ContentManager#remove(org.scribble.tools.api.Path)
+     */
+    @Override
+    public void remove(Path path) {
+        contents.remove(path);
+    }
+
 }

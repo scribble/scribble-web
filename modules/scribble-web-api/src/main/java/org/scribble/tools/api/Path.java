@@ -26,6 +26,11 @@ public class Path {
     private String[] parts;
     private boolean relative = true;
 
+    public Path() {
+        parts = new String[0];
+        relative = false;
+    }
+
     public Path(String path) {
         if (path.startsWith(java.io.File.separator)) {
             relative = false;

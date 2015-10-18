@@ -57,4 +57,12 @@ public interface ContentManager {
      */
     void rename(Path from, Path to);
 
+    /**
+     * This method removes the content contained within the specified
+     * path.
+     *
+     * @param path The path
+     */
+    void remove(Path path);
+
 }
