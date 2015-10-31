@@ -3,37 +3,40 @@
 
     <br>
 
+     <form class="form-horizontal" name="addModuleForm" role="form" novalidate >
+      <div class="form-group input">
+        <div class="col-lg-6 col-sm-8 col-xs-12">
+          <div class="input-group input-group-lg">
+            <input type="text" class="form-control" name="newModuleNameField"
+                 ng-model="newModuleName" ng-model-options="{ updateOn: 'default blur'}"
+                 placeholder="Enter a new module name" required>
+            <span class="input-group-btn">
+              <input class="btn btn-primary" type="submit" ng-disabled="!newModuleName" ng-click="addModule()" value="Add" />
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>
+ 
     <div class="row">
-      <div class="col-md-9">
+      <div class="col-md-12">
+      
+        <div>
         Search: <input ng-model="query">
+        </div>
 
         <br>
         <br>
 
         <ul class="list-group" >
           <li ng-repeat="module in modules | filter:query" class="list-group-item" >
-            <h3><a href="/modules/{{module}}">{{module}}</a></h3>
+            <h3><a href="/modules/{{module}}">{{module}}</a>
+            <span class="pull-right">
+              <a href="#" ng-click="deleteModule(module)"><i class="fa fa-trash-o"></i></a>
+            </span>
+            </h3>
           </li>
        </ul>
-      </div>
-
-      <div class="col-md-3">
-
-		<h2>Create a new module</h2>
-
-        <form name="newmoduleform" class="css-form" novalidate>
-          Module:
-          <input type="text" ng-model="newmodule.name" name="moduleName" required="" />
-          <br />
-          <div ng-show="newmoduleform.$submitted || newmoduleform.moduleName.$touched">
-            <div ng-show="newmoduleform.moduleName.$error.required"><font color="red">Enter the module name.</font></div>
-          </div>
-
-          <br />
-          <input type="button" ng-click="reset(newmoduleform)" value="Reset" />
-          <input type="submit" ng-click="create(newmodule)" value="Create" />
-        </form>
-
       </div>
 
     </div>

@@ -24,26 +24,26 @@ module Scribble {
 
     $scope.nameOrderProp = 'name';
 
-    $scope.master = {};
+    $scope.newModuleName = "";
 
-    $scope.create = function(newmodule) {
-      var moduleDefn = { data: "module "+newmodule.name+
+    $scope.addModule = function() {
+      var moduleDefn = { data: "module "+$scope.newModuleName+
               ";\r\n\r\nglobal protocol ProtocolName(role A, role B) {\r\n}\r\n" };
       		
-      $http.put('/scribble-server/modules/'+newmodule.name, moduleDefn).success(function(data) {
-        $location.path('/modules/'+newmodule.name);
+      $http.put('/scribble-server/modules/'+$scope.newModuleName, moduleDefn).success(function(data) {
+        $location.path('/modules/'+$scope.newModuleName);
       });
     };
 
-    $scope.reset = function(form) {
-      if (form) {
-        form.$setPristine();
-        form.$setUntouched();
+    $scope.deleteModule = function(name) {
+      if (confirm('Are you sure you want to delete module \"'+name+'\"?')) {
+        $http.delete('/scribble-server/modules/'+name).success(function(data) {
+          console.log('Deleted module: '+name);
+          $scope.modules.remove(name);
+        });
       }
-      $scope.newmodule = angular.copy($scope.master);
     };
 
-    $scope.reset();
   }]);
 
 }
