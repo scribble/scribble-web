@@ -39,6 +39,7 @@
     <version.junit>4.9</version.junit>
     <version.maven-war-plugin>2.5</version.maven-war-plugin>
     <version.org.scribble>0.3.0.Final</version.org.scribble>
+    <version.org.tuckey>4.0.3</version.org.tuckey>
     <version.org.wildfly>8.2.0.Final</version.org.wildfly>
   </properties>
 
@@ -113,6 +114,12 @@
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
         <version>${version.com.fasterxml.jackson.core}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.tuckey</groupId>
+        <artifactId>urlrewritefilter</artifactId>
+        <version>${version.org.tuckey}</version>
       </dependency>
 
       <dependency>
