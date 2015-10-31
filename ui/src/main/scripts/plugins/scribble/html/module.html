@@ -7,13 +7,13 @@
 
     <h1><b>{{moduleName}}</b> <span style="color:grey">Module</span></h1>
 
-    <a href="#" editable-textarea="module.description" e-rows="14" e-cols="120" rows="7" >
+    <a href="#" editable-textarea="module.description" e-rows="14" e-cols="120" rows="7" onaftersave="setDirty()" >
         <pre><i>{{ module.description || 'No description' }}</i></pre>
     </a>
     
     <div>
-      <button type="button" class="btn btn-success btn-sm" ng-click="saveModule()">Save</button>
-      <button type="button" class="btn btn-danger btn-sm" ng-click="restoreModule()">Discard</button>
+      <button type="button" class="btn btn-success btn-sm" ng-disabled="!dirty || loading" ng-click="saveModule()">Save</button>
+      <button type="button" class="btn btn-danger btn-sm" ng-disabled="!dirty || loading" ng-click="restoreModule()">Discard</button>
       
       <div style="float: right;">
       <label>Roles:</label>

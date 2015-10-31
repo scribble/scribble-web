@@ -28,7 +28,7 @@ module Scribble {
 
     $scope.create = function(newmodule) {
       var moduleDefn = { data: "module "+newmodule.name+
-              ";\r\n\r\nglobal protocol Name() {\r\n}\r\n" };
+              ";\r\n\r\nglobal protocol ProtocolName(role A, role B) {\r\n}\r\n" };
       		
       $http.put('/scribble-server/modules/'+newmodule.name, moduleDefn).success(function(data) {
         $location.path('/modules/'+newmodule.name);
