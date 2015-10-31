@@ -19,9 +19,18 @@ module Scribble {
   export var ModuleController = _module.controller("Scribble.ModuleController", ["$scope", "$routeParams", "$http", '$location', ($scope, $routeParams, $http, $location) => {
 
     $scope.moduleName = $routeParams.module;
+    $scope.dirty = false;
+    $scope.loading = true;
+    
+    $scope.module = {
+      description: "",
+      data: ""
+    };
     
     $http.get('/scribble-server/modules/'+$scope.moduleName).success(function(data) {
-      $scope.module = data;
+      $scope.module.description = data.description;
+      $scope.module.data = data.data;
+      $scope.reset();
     });
 
     $http.get('/scribble-server/actions/roles/'+$scope.moduleName).success(function(data) {
@@ -30,23 +39,36 @@ module Scribble {
 
     $scope.saveModule = function() {
       return $http.put('/scribble-server/modules/'+$scope.moduleName, $scope.module)
-        .success(function(data, status, headers, config) {
-        //if ($scope.moduleName !== data.module) {
-        //  $location.path('/modules/'+data.module);
-        //} else {
-          $scope.verify();
-        //}
+          .success(function(data, status, headers, config) {
+        $scope.reset();
+        $scope.verify();
       });
     };
 
     $scope.restoreModule = function() {
+      $scope.loading = true;
+
       $http.get('/scribble-server/modules/'+$scope.moduleName).success(function(data) {
-        $scope.module = data;
+        $scope.module.description = data.description;
+        $scope.module.data = data.data;
+        $scope.reset();
 
         $http.get('/scribble-server/actions/roles/'+$scope.moduleName).success(function(data) {
           $scope.roles = data;
         });
       });
+    };
+    
+    $scope.reset = function() {
+      $scope.dirty = false;
+    };
+
+    $scope.setDirty = function() {
+      $scope.dirty = true;
+    };
+
+    $scope.isDirty = function() {
+      return $scope.dirty;
     };
 
     $scope.selectedMarker = function(marker) {
@@ -82,6 +104,14 @@ module Scribble {
       _editor.setOption('mode', 'scribble');
       
       $scope.doc.markClean();
+      
+      _editor.on("change", function() {
+        if ($scope.loading) {
+          $scope.loading = false;
+        } else {
+          $scope.setDirty();
+        }
+      });
     };
 
     $scope.verify = function() {
