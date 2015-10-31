@@ -27,6 +27,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -75,6 +76,30 @@ public class ModulesHandler {
 
         try {
             contentManager.setContent(ModuleUtil.getPath(moduleName), content);
+            
+            response.resume(Response.status(Response.Status.OK).build());
+
+        } catch (Throwable t) {
+            Map<String, String> errors = new HashMap<String, String>();
+            errors.put("errorMsg", "Internal Error: " + t.getMessage());
+            response.resume(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(errors).type(APPLICATION_JSON_TYPE).build());
+        }
+    }
+
+    @DELETE
+    @Path("/{module}")
+    @ApiOperation(
+            value = "Delete a module definition")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Delete module succeeded."),
+            @ApiResponse(code = 500, message = "Unexpected error happened while deleting the module") })
+    public void deleteModule(
+            @Suspended final AsyncResponse response,
+            @ApiParam(required = true, value = "The module name") @PathParam("module") String moduleName) {
+
+        try {
+            contentManager.remove(ModuleUtil.getPath(moduleName));
             
             response.resume(Response.status(Response.Status.OK).build());
 
