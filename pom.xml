@@ -48,6 +48,7 @@
     <module>modules/scribble-web-impl</module>
     <module>modules/scribble-cm-filesystem</module>
     <module>ui</module>
+    <module>dist</module>
   </modules>
 
   <dependencyManagement>
@@ -62,6 +63,19 @@
         <groupId>org.scribble.tools.web</groupId>
         <artifactId>scribble-web-impl</artifactId>
         <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.scribble.tools.web</groupId>
+        <artifactId>scribble-web-rest</artifactId>
+        <version>${project.version}</version>
+        <type>war</type>
+      </dependency>
+      <dependency>
+        <groupId>org.scribble.tools.web</groupId>
+        <artifactId>scribble-web-ui</artifactId>
+        <version>${project.version}</version>
+        <type>war</type>
       </dependency>
 
       <dependency>
@@ -107,6 +121,12 @@
         <version>${version.org.wildfly}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.wildfly</groupId>
+        <artifactId>wildfly-dist</artifactId>
+        <version>${version.org.wildfly}</version>
+        <type>zip</type>
       </dependency>
 
       <!-- Swagger REST annotations -->
