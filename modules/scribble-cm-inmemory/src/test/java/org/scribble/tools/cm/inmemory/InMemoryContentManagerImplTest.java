@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.api.impl;
+package org.scribble.tools.cm.inmemory;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.scribble.tools.api.Content;
 import org.scribble.tools.api.ContentManager;
 import org.scribble.tools.api.Path;
-import org.scribble.tools.api.impl.InMemoryContentManagerImpl;
+import org.scribble.tools.cm.inmemory.InMemoryContentManagerImpl;
 
 /**
  * @author gbrown
