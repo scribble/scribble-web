@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.scribble.tools.web</groupId>
     <artifactId>scribble-web-parent</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 

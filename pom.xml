@@ -22,7 +22,7 @@
 
   <groupId>org.scribble.tools.web</groupId>
   <artifactId>scribble-web-parent</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Scribble Web</name>
 
@@ -56,7 +56,7 @@
     <connection>scm:git:git@github.com:scribble/scribble-web.git</connection>
     <developerConnection>scm:git:git@github.com:scribble/scribble-web.git</developerConnection>
     <url>https://github.com/scribble/scribble-web</url>
-    <tag>0.1.0</tag>
+    <tag>head</tag>
   </scm>
 
   <dependencyManagement>
