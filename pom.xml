@@ -48,6 +48,7 @@
     <module>modules/scribble-web-api</module>
     <module>modules/scribble-web-impl</module>
     <module>modules/scribble-cm-filesystem</module>
+    <module>modules/scribble-cm-inmemory</module>
     <module>ui</module>
     <module>dist</module>
   </modules>
@@ -63,6 +64,16 @@
       <dependency>
         <groupId>org.scribble.tools.web</groupId>
         <artifactId>scribble-web-impl</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scribble.tools.web</groupId>
+        <artifactId>scribble-cm-filesystem</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scribble.tools.web</groupId>
+        <artifactId>scribble-cm-inmemory</artifactId>
         <version>${project.version}</version>
       </dependency>
 

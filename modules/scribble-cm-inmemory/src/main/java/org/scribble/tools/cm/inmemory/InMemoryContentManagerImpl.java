@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.scribble.tools.api.impl;
+package org.scribble.tools.cm.inmemory;
 
 import java.util.ArrayList;
 import java.util.List;

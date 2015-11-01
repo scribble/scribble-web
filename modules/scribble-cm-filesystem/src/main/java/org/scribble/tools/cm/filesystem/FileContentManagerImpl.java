@@ -40,7 +40,7 @@ public class FileContentManagerImpl implements ContentManager {
     /**  */
     private static final String SCRIBBLE_PATH = "SCRIBBLE_PATH";
 
-    private static final String DEFAULT_SCRIBBLE_PATH = System.getProperty("user.dir") + File.separator + "scribble";
+    private static final String DEFAULT_SCRIBBLE_PATH = System.getProperty("user.home") + File.separator + ".scribble";
 
     private static String scribblePath = System.getProperty(SCRIBBLE_PATH, DEFAULT_SCRIBBLE_PATH);
 
@@ -94,6 +94,11 @@ public class FileContentManagerImpl implements ContentManager {
         }
 
         File root = new File(scribblePath);
+        
+        if (!root.exists()) {
+            // Create root folder
+            root.mkdirs();
+        }
 
         if (root.exists()) {
             return new File(root, path.toString());
