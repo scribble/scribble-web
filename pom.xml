@@ -26,6 +26,19 @@
   <packaging>pom</packaging>
   <name>Scribble Web</name>
 
+  <url>https://github.com/scribble/scribble-web</url>
+  <organization>
+    <name>Scribble.org.</name>
+    <url>http://scribble.org</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <distribution>repo</distribution>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+    </license>
+  </licenses>
+
   <properties>
     <!-- maven-compiler-plugin -->
     <maven.compiler.source>1.8</maven.compiler.source>
