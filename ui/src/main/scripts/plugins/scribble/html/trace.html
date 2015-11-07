@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-md-12" ng-controller="Scribble.TraceController">
+    <ol class="breadcrumb">
+      <li><a href="/">Modules</a></li>
+      <li><a href="/modules/{{moduleName}}">{{moduleName}}</a></li>
+      <li><a href="/modules/{{moduleName}}/trace">Traces</a></li>
+      <li class="active">{{traceName}}</li>
+    </ol>
+
+    <h1><b>{{traceName}}</b> <span style="color:grey">Trace</span></h1>
+
+    <a href="#" editable-textarea="trace.description" e-rows="14" e-cols="120" rows="7" onaftersave="setDirty()" >
+        <pre><i>{{ trace.description || 'No description' }}</i></pre>
+    </a>
+    
+    <div>
+      <button type="button" class="btn btn-success btn-sm" ng-disabled="!dirty || loading" ng-click="saveTrace()">Save</button>
+      <button type="button" class="btn btn-danger btn-sm" ng-disabled="!dirty || loading" ng-click="restoreTrace()">Discard</button>
+    </div>
+    
+    <br>
+
+      <div class="row">
+        <div class="col-md-12">
+          <!-- ui-codemirror ui-codemirror-opts="editorOptions" ng-model="module.definition" ></ui-codemirror -->
+          <div ng-model="trace.data" ui-codemirror="{ onLoad : codemirrorLoaded }" ></div>
+
+          <br>
+          
+          <div class="text-center" ng-hide="markers !== undefined">
+            <div class="spinner spinner-lg"></div>
+            <p>Verifying trace and simulating ...</p>
+          </div>
+          
+          <ul class="list-group" ng-show="markers !== undefined">
+            <li ng-repeat="marker in markers" class="list-group-item"
+            				ng-click="selectedMarker(marker)"
+            				ng-class="{'list-group-item-danger': marker.severity==='Error', 'list-group-item-warning': marker.severity==='Warning'}" >
+              {{marker.description}}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+  </div>
+</div>

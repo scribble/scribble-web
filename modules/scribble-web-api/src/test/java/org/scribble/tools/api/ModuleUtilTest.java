@@ -23,7 +23,7 @@ import org.junit.Test;
 /**
  * @author gbrown
  */
-public class ProtocolUtilTest {
+public class ModuleUtilTest {
 
     @Test
     public void testGetModuleRelative() {

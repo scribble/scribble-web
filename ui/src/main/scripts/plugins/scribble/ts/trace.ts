@@ -16,46 +16,39 @@
 /// <reference path="scribblePlugin.ts"/>
 module Scribble {
 
-  export var ModuleController = _module.controller("Scribble.ModuleController", ["$scope", "$routeParams", "$http", '$location', ($scope, $routeParams, $http, $location) => {
+  export var TraceController = _module.controller("Scribble.TraceController", ["$scope", "$routeParams", "$http", '$location', ($scope, $routeParams, $http, $location) => {
 
     $scope.moduleName = $routeParams.module;
+    $scope.traceName = $routeParams.trace;
     $scope.dirty = false;
     $scope.loading = true;
     
-    $scope.module = {
+    $scope.trace = {
       description: "",
       data: ""
     };
     
-    $http.get('/scribble-server/modules/'+$scope.moduleName).success(function(data) {
-      $scope.module.description = data.description;
-      $scope.module.data = data.data;
+    $http.get('/scribble-server/traces/'+$scope.moduleName+'/'+$scope.traceName).success(function(data) {
+      $scope.trace.description = data.description;
+      $scope.trace.data = data.data;
       $scope.reset();
     });
 
-    $http.get('/scribble-server/actions/roles/'+$scope.moduleName).success(function(data) {
-      $scope.roles = data;
-    });
-
-    $scope.saveModule = function() {
-      return $http.put('/scribble-server/modules/'+$scope.moduleName, $scope.module)
+    $scope.saveTrace = function() {
+      return $http.put('/scribble-server/traces/'+$scope.moduleName+'/'+$scope.traceName, $scope.trace)
           .success(function(data, status, headers, config) {
         $scope.reset();
         $scope.verify();
       });
     };
 
-    $scope.restoreModule = function() {
+    $scope.restoreTrace = function() {
       $scope.loading = true;
 
-      $http.get('/scribble-server/modules/'+$scope.moduleName).success(function(data) {
-        $scope.module.description = data.description;
-        $scope.module.data = data.data;
+      $http.get('/scribble-server/traces/'+$scope.moduleName+'/'+$scope.traceName).success(function(data) {
+        $scope.trace.description = data.description;
+        $scope.trace.data = data.data;
         $scope.reset();
-
-        $http.get('/scribble-server/actions/roles/'+$scope.moduleName).success(function(data) {
-          $scope.roles = data;
-        });
       });
     };
     
@@ -117,16 +110,12 @@ module Scribble {
     $scope.verify = function() {
       $scope.markers = undefined;
     
-      $http.post('/scribble-server/actions/verify/'+$scope.moduleName).success(function(data) {
+      $http.post('/scribble-server/actions/simulate/'+$scope.moduleName+'/'+$scope.traceName).success(function(data) {
         $scope.markers = data;
 
         if ($scope.currentMarker !== undefined) {
           $scope.currentMarker.clear();
         }
-
-        $http.get('/scribble-server/actions/roles/'+$scope.moduleName).success(function(data) {
-          $scope.roles = data;
-        });
       });
     };
     

@@ -42,6 +42,14 @@ module Scribble {
       when('/modules/:module/role/:role', {
         templateUrl: 'plugins/scribble/html/role.html',
         controller: 'Scribble.RoleController'
+      }).
+      when('/modules/:module/trace', {
+        templateUrl: 'plugins/scribble/html/traces.html',
+        controller: 'Scribble.TracesController'
+      }).
+      when('/modules/:module/trace/:trace', {
+        templateUrl: 'plugins/scribble/html/trace.html',
+        controller: 'Scribble.TraceController'
       });
   }]);
 

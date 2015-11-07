@@ -16,9 +16,11 @@
       <button type="button" class="btn btn-danger btn-sm" ng-disabled="!dirty || loading" ng-click="restoreModule()">Discard</button>
       
       <div style="float: right;">
-      <label>Roles:</label>
-      <a type="button" href="/modules/{{moduleName}}/role/{{role}}" class="btn btn-sm btn-primary"
+        <label>Roles:</label>
+        <a type="button" href="/modules/{{moduleName}}/role/{{role}}" class="btn btn-sm btn-primary"
       							ng-repeat="role in roles">{{role}}</a>
+        <label>    </label>
+        <a type="button" href="/modules/{{moduleName}}/trace" class="btn btn-sm btn-info">Traces</a>
       </div>
     </div>
     
@@ -31,7 +33,12 @@
 
           <br>
           
-          <ul class="list-group">
+          <div class="text-center" ng-hide="markers !== undefined">
+            <div class="spinner spinner-lg"></div>
+            <p>Verifying module ...</p>
+          </div>
+          
+          <ul class="list-group" ng-show="markers !== undefined">
             <li ng-repeat="marker in markers" class="list-group-item"
             				ng-click="selectedMarker(marker)"
             				ng-class="{'list-group-item-danger': marker.severity==='Error', 'list-group-item-warning': marker.severity==='Warning'}" >

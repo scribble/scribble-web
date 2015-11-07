@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col-md-12" ng-controller="Scribble.TracesController">
+    <ol class="breadcrumb">
+      <li><a href="/">Modules</a></li>
+      <li><a href="/modules/{{moduleName}}">{{moduleName}}</a></li>
+      <li class="active">Traces</li>
+    </ol>
+
+    <h1><b>{{moduleName}}</b> <span style="color:grey">Traces</span></h1>
+
+    <br>
+
+     <form class="form-horizontal" name="addTraceForm" role="form" novalidate >
+      <div class="form-group input">
+        <div class="col-lg-6 col-sm-8 col-xs-12">
+          <div class="input-group input-group-lg">
+            <input type="text" class="form-control" name="newTraceNameField"
+                 ng-model="newTraceName" ng-model-options="{ updateOn: 'default blur'}"
+                 placeholder="Enter a new trace name" required>
+            <span class="input-group-btn">
+              <input class="btn btn-primary" type="submit" ng-disabled="!newTraceName" ng-click="addTrace()" value="Add" />
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>
+ 
+    <div class="row">
+      <div class="col-md-12">
+      
+        <div>
+        Search: <input ng-model="query">
+
+      <div style="float: right;">
+        <a type="button" href="#" class="btn btn-sm btn-info" ng-hide="running === 0">Simulating {{running}}</a>
+        <label>    </label>
+        <a type="button" href="#" class="btn btn-sm btn-success" ng-hide="successful === 0">Successful {{successful}}</a>
+        <label>    </label>
+        <a type="button" href="#" class="btn btn-sm btn-danger" ng-hide="failed === 0">Failed {{failed}}</a>
+      </div>
+        </div>
+
+        <br>
+        <br>
+
+        <ul class="list-group" >
+          <li ng-repeat="trace in traces | filter:query" class="list-group-item" >
+            
+            <h3>
+            <i class="fa fa-spinner fa-pulse" ng-hide="trace.issues !== undefined"></i>
+            <i class="glyphicon glyphicon-ok" style="color:green" ng-show="trace.issues.length === 0"></i>
+            <i class="glyphicon glyphicon-remove" style="color:red" ng-show="trace.issues.length > 0"></i>
+            <a href="/modules/{{moduleName}}/trace/{{trace.name}}">{{trace.name}}</a>
+            <span class="pull-right">
+              <a href="#" ng-click="deleteTrace(trace)"><i class="fa fa-trash-o"></i></a>
+            </span>
+            </h3>
+
+            <ul class="list-group" ng-show="trace.issues.length > 0">
+              <li ng-repeat="issue in trace.issues" class="list-group-item"
+            				ng-class="{'list-group-item-danger': issue.severity==='Error', 'list-group-item-warning': issue.severity==='Warning'}" >
+                {{issue.description}}
+              </li>
+            </ul>
+          </li>
+       </ul>
+      </div>
+
+    </div>
+  </div>
+</div>

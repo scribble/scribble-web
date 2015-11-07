@@ -56,4 +56,14 @@ public interface ToolManager {
      */
     Map<String,Projection> project(Path path);
 
+    /**
+     * This method simulates the trace definition associated with the supplied
+     * module and trace paths.
+     *
+     * @param modulePath The module path
+     * @param tracePath The trace path
+     * @return The list of issues found during simulation, or empty is no problems
+     */
+    List<Issue> simulate(Path modulePath, Path tracePath);
+
 }
