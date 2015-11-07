@@ -31,5 +31,9 @@
     <from>/modules**</from>
     <to>/</to>
   </rule>
+  <rule match-type="wildcard">
+    <from>/traces**</from>
+    <to>/</to>
+  </rule>
 </urlrewrite>
 

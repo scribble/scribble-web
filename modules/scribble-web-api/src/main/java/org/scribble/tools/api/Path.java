@@ -43,6 +43,15 @@ public class Path {
         }
     }
 
+    public Path(Path parent, String child) {
+        parts = new String[parent.parts.length + 1];
+        for (int i=0; i < parent.parts.length; i++) {
+            parts[i] = parent.parts[i];
+        }
+        parts[parent.parts.length] = child;
+        relative = parent.relative;
+    }
+
     protected Path(String[] parts, boolean relative) {
         this.parts = parts;
         this.relative = relative;
@@ -106,6 +115,14 @@ public class Path {
             }
         }
         return null;
+    }
+    
+    public boolean hasExtension(String extension) {
+        String ext = getExtension();
+        if (ext != null && extension != null) {
+            return ext.equals(extension);
+        }
+        return false;
     }
     
     public boolean isRelative() {

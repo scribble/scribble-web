@@ -40,6 +40,7 @@ import org.scribble.tools.api.Issue;
 import org.scribble.tools.api.Projection;
 import org.scribble.tools.api.ModuleUtil;
 import org.scribble.tools.api.ToolManager;
+import org.scribble.tools.api.TraceUtil;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -143,6 +144,32 @@ public class ActionsHandler {
                     .entity(errors).type(APPLICATION_JSON_TYPE).build());
         }
 
+    }
+
+    @POST
+    @Path("/simulate/{module}/{trace}")
+    @ApiOperation(value = "Simulate a module's trace definition",
+            response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Simulated a trace successfully"),
+            @ApiResponse(code = 500, message = "Failed to simulate the module's trace") })
+    public void simulateTrace(
+            @Suspended final AsyncResponse response,
+            @ApiParam(value = "The module name", required = true) @PathParam("module") String moduleName,
+            @ApiParam(value = "The trace name", required = true) @PathParam("trace") String traceName) {
+
+        try {
+            List<Issue> result=toolManager.simulate(ModuleUtil.getPath(moduleName),
+                    TraceUtil.getPath(moduleName, traceName));
+
+            response.resume(Response.status(Response.Status.OK).entity(result).build());
+
+        } catch (Throwable t) {
+            Map<String, String> errors = new HashMap<String, String>();
+            errors.put("errorMsg", "Internal Error: " + t.getMessage());
+            response.resume(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(errors).type(APPLICATION_JSON_TYPE).build());
+        }
     }
 
 }

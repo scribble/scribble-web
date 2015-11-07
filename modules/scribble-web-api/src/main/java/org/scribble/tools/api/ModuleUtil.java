@@ -22,7 +22,7 @@ package org.scribble.tools.api;
 public class ModuleUtil {
 
     /**  */
-    private static final String SPR_EXTENSION = "spr";
+    public static final String SPR_EXTENSION = "spr";
 
     /**
      * This method returns the module associated with the supplied
