@@ -27,33 +27,14 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>scribble-cm-filesystem</artifactId>
+  <artifactId>scribble-tools-api</artifactId>
   <packaging>jar</packaging>
-  <name>Scribble Web::Modules::ContentManager FileSystem</name>
+  <name>Scribble::Tools::API</name>
 
   <properties>
   </properties>
 
   <dependencies>
-
-    <dependency>
-      <groupId>org.scribble.tools.web</groupId>
-      <artifactId>scribble-web-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>javax.inject</groupId>
