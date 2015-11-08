@@ -56,10 +56,10 @@
 
   <modules>
     <module>backend/scribble-web-rest</module>
-    <module>modules/scribble-web-api</module>
-    <module>modules/scribble-web-impl</module>
-    <module>modules/scribble-cm-filesystem</module>
-    <module>modules/scribble-cm-inmemory</module>
+    <module>tools/scribble-tools-api</module>
+    <module>tools/scribble-tools-impl</module>
+    <module>tools/scribble-tools-cm-filesystem</module>
+    <module>tools/scribble-tools-cm-inmemory</module>
     <module>ui</module>
     <module>dist</module>
   </modules>
@@ -76,22 +76,22 @@
 
       <dependency>
         <groupId>org.scribble.tools.web</groupId>
-        <artifactId>scribble-web-api</artifactId>
+        <artifactId>scribble-tools-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.scribble.tools.web</groupId>
-        <artifactId>scribble-web-impl</artifactId>
+        <artifactId>scribble-tools-impl</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.scribble.tools.web</groupId>
-        <artifactId>scribble-cm-filesystem</artifactId>
+        <artifactId>scribble-tools-cm-filesystem</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.scribble.tools.web</groupId>
-        <artifactId>scribble-cm-inmemory</artifactId>
+        <artifactId>scribble-tools-cm-inmemory</artifactId>
         <version>${project.version}</version>
       </dependency>
 

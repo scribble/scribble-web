@@ -27,58 +27,32 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>scribble-web-impl</artifactId>
+  <artifactId>scribble-tools-cm-filesystem</artifactId>
   <packaging>jar</packaging>
-  <name>Scribble Web::Modules::Impl</name>
+  <name>Scribble::Tools::ContentManager FileSystem</name>
 
   <properties>
-    <version.org.scribble>0.3.0.Final</version.org.scribble>
-    <version.org.codehaus.jackson>1.9.9</version.org.codehaus.jackson>
   </properties>
 
   <dependencies>
 
     <dependency>
       <groupId>org.scribble.tools.web</groupId>
-      <artifactId>scribble-web-api</artifactId>
+      <artifactId>scribble-tools-api</artifactId>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.scribble</groupId>
-      <artifactId>scribble-core</artifactId>
-      <version>${version.org.scribble}</version>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.scribble</groupId>
-      <artifactId>scribble-parser</artifactId>
-      <version>${version.org.scribble}</version>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.scribble</groupId>
-      <artifactId>scribble-validation</artifactId>
-      <version>${version.org.scribble}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.scribble</groupId>
-      <artifactId>scribble-projection</artifactId>
-      <version>${version.org.scribble}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.scribble</groupId>
-      <artifactId>scribble-trace</artifactId>
-      <version>${version.org.scribble}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-core-asl</artifactId>
-      <version>${version.org.codehaus.jackson}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
-      <version>${version.org.codehaus.jackson}</version>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
     </dependency>
 
     <dependency>
