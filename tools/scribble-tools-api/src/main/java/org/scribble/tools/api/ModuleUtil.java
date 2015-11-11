@@ -33,7 +33,7 @@ public class ModuleUtil {
      */
     public static String getModule(Path path) {
         if (path.isRelative()) {
-            throw new RuntimeException("Path must not be relative");
+            throw new RuntimeException("Path '"+path.toString()+"' must not be relative");
         } else if (!path.isContent()) {
             throw new RuntimeException("Path does not represent content");
         } else if (!path.getExtension().equals(SPR_EXTENSION)) {

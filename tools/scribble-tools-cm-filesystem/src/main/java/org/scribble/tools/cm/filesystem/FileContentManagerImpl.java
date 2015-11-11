@@ -42,9 +42,27 @@ public class FileContentManagerImpl implements ContentManager {
 
     private static final String DEFAULT_SCRIBBLE_PATH = System.getProperty("user.home") + File.separator + ".scribble";
 
-    private static String scribblePath = System.getProperty(SCRIBBLE_PATH, DEFAULT_SCRIBBLE_PATH);
+    private static String scribblePath;
 
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    static {
+        String path=null;
+
+        if (System.getenv().containsKey("OPENSHIFT_DATA_DIR")) {
+            path = System.getenv("OPENSHIFT_DATA_DIR") + "scribble";
+        } else {
+            path = System.getProperty(SCRIBBLE_PATH, DEFAULT_SCRIBBLE_PATH);
+        }
+        
+        if (path == null) {
+            log.severe("Scribble path not found");
+        } else if (path.endsWith(File.separator)) {
+            path = path.substring(0, path.length()-1);
+        }
+        
+        scribblePath = path;
+    }
 
     /* (non-Javadoc)
      * @see org.scribble.tools.api.ContentManager#getContentPaths(org.scribble.tools.api.Path)
@@ -101,6 +119,10 @@ public class FileContentManagerImpl implements ContentManager {
         }
 
         if (root.exists()) {
+            if (path.isRoot()) {
+                return root;
+            }
+
             return new File(root, path.toString());
         }
 

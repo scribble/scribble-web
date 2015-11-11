@@ -128,10 +128,18 @@ public class Path {
     public boolean isRelative() {
         return relative;
     }
+    
+    public boolean isRoot() {
+        return parts.length == 0;
+    }
 
     public String toString() {
         StringBuffer buf=new StringBuffer();
         
+        if (parts.length == 0 && !isRelative()) {
+            buf.append(java.io.File.separator);            
+        }
+
         for (int i=0; i < parts.length; i++) {
             if (i > 0 || !isRelative()) {
                 buf.append(java.io.File.separator);
