@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.scribble.context.DefaultModuleContext;
 import org.scribble.model.Module;
 import org.scribble.parser.ProtocolParser;
@@ -42,6 +43,9 @@ import org.scribble.tools.api.Issue.Severity;
 import org.scribble.tools.api.Path;
 import org.scribble.tools.api.Projection;
 import org.scribble.tools.api.ToolManager;
+import org.scribble.trace.model.MessageTransfer;
+import org.scribble.trace.model.MonitorRoleSimulator;
+import org.scribble.trace.model.Role;
 import org.scribble.trace.model.Step;
 import org.scribble.trace.model.Trace;
 import org.scribble.trace.simulation.DefaultSimulatorContext;
@@ -59,6 +63,10 @@ public class ToolManagerImpl implements ToolManager {
     private ContentManager contentManager;
 
     private ObjectMapper mapper = new ObjectMapper();
+
+    private static final TypeReference<java.util.List<Step>> STEP_LIST =
+            new TypeReference<java.util.List<Step>>() {
+    };
 
     /* (non-Javadoc)
      * @see org.scribble.tools.api.ToolManager#setContentManager(org.scribble.tools.api.ContentManager)
@@ -83,35 +91,41 @@ public class ToolManagerImpl implements ToolManager {
     public List<Issue> validate(Path path) {
         List<Issue> ret = new ArrayList<Issue>();
 
+        MarkerIssueLogger logger = new MarkerIssueLogger();
+
+        getModule(path, logger);
+        
+        ret.addAll(logger.getIssues());
+
+        return ret;
+    }
+
+    protected Module getModule(Path path, MarkerIssueLogger logger) {
+        Module module = null;
         Content p = contentManager.getContent(path);
 
         if (p != null) {
             ProtocolParser pp = new ProtocolParser();
-
-            MarkerIssueLogger logger = new MarkerIssueLogger();
 
             ByteArrayInputStream is = new ByteArrayInputStream(p.getData().getBytes());
 
             Resource res = new InputStreamResource(null, is);
 
             try {
-                Module module = pp.parse(res, null, logger);
+                module = pp.parse(res, null, logger);
 
                 if (logger.getIssues().isEmpty()) {
                     ProtocolValidator pv = new ProtocolValidator();
                     DefaultModuleContext context = new DefaultModuleContext(null, module, null);
                     pv.validate(context, module, logger);
-                    ret.addAll(logger.getIssues());
-                } else {
-                    ret.addAll(logger.getIssues());
                 }
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-
-        return ret;
+        
+        return module;
     }
 
     /* (non-Javadoc)
@@ -175,8 +189,38 @@ public class ToolManagerImpl implements ToolManager {
         Content traceContent = contentManager.getContent(tracePath);
 
         try {
-            Trace trace = mapper.readValue(traceContent.getData(), Trace.class);
+            // Create role and simulator details
+            MarkerIssueLogger logger=new MarkerIssueLogger();
+            
+            Module module = getModule(modulePath, logger);
+            
+            if (!logger.getIssues().isEmpty()) {
+                Issue issue=new Issue();
+                issue.setDescription("Unable to simulate module due to known issues");
+                issue.setSeverity(Severity.Warning);
+                issues.add(issue);
+                return issues;
+            }
+            
+            List<Step> steps = mapper.readValue(traceContent.getData(), STEP_LIST);
 
+            Trace trace = new Trace();
+            trace.setSteps(steps);
+            
+            Map<String,Role> roles = new HashMap<String,Role>();
+            
+            for (Step step : trace.getSteps()) {
+                if (step instanceof MessageTransfer) {
+                    MessageTransfer mt=(MessageTransfer)step;
+                    defineRole(mt.getFromRole(), roles, module);
+                    for (String toRole : mt.getToRoles()) {
+                        defineRole(toRole, roles, module);
+                    }
+                }
+            }
+            
+            trace.getRoles().addAll(roles.values());
+            
             SimulatorContext context = new DefaultSimulatorContext(new ResourceLocator() {
                 @Override
                 public Resource getResource(final String path) {
@@ -256,4 +300,17 @@ public class ToolManagerImpl implements ToolManager {
         return issues;
     }
 
+    protected void defineRole(String roleName, Map<String,Role> roles, Module module) {
+        if (!roles.containsKey(roleName) && !module.getProtocols().isEmpty()) {
+            Role role = new Role();
+            role.setName(roleName);
+            MonitorRoleSimulator mrs=new MonitorRoleSimulator();
+            mrs.setRole(roleName);
+            mrs.setModule(module.getName());
+            mrs.setProtocol(module.getProtocols().get(0).getName());
+            role.setSimulator(mrs);
+            
+            roles.put(roleName, role);
+        }
+    }
 }
