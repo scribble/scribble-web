@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.scribble.tools.web</groupId>
     <artifactId>scribble-web-parent</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
