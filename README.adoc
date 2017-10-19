@@ -1,5 +1,7 @@
 = Scribble Web
 
+*NO LONGER BEING ACTIVELY DEVELOPED*
+
 This project provides the web tooling for the Scribble project.
 
 
