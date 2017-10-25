@@ -63,27 +63,23 @@ module Scribble {
     $scope.newTraceName = "";
 
     $scope.addTrace = function() {
-      var traceDefn = {
-        name: $scope.newTraceName,
-        steps: [],
-        roles: []
+      var steps = [];
+
+      var step = {
+        type: "MessageTransfer",
+        message: {
+          operator: "name",
+          types: ["type"],
+          values: [""]
+        },
+        fromRole: "FromRole",
+        toRoles: ["ToRole"]
       };
       
-      for (var i = 0; i < $scope.roles.length; i++) {
-        var role = {
-          name: $scope.roles[i],
-          simulator: {
-            type: "MonitorRoleSimulator",
-            module: $scope.moduleName,
-            role: $scope.roles[i],
-            protocol: ""
-          }
-        };
-        traceDefn.roles.push(role);
-      }
+      steps.push(step);
 
       var content = {
-        data: JSON.stringify(traceDefn, null, 2)
+        data: JSON.stringify(steps, null, 2)
       };
 
       $http.put('/scribble-server/traces/'+$scope.moduleName+'/'+$scope.newTraceName, content).success(function(data) {
